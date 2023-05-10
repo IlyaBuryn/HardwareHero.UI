@@ -2,6 +2,8 @@ import { AppBar, Box, Button, Container, IconButton, ImageList, ImageListItem, S
 import MenuIcon from '@mui/icons-material/Menu';
 import './Header.css';
 import logo from './../../../images/tmplogo.png'
+import LogInDialogButton from '../../Common/Dialog/LogInDialog';
+import SignUpDialogButton from '../../Common/Dialog/SignUpDialog';
 
 const Header = () => {
   return (
@@ -20,11 +22,8 @@ const Header = () => {
 
             <Stack spacing={2} direction='row'>
 
-              <Box>
-                <Button color='inherit' variant='outlined'>Log In</Button>
-              </Box>
-
-              <Button color='secondary' variant='contained'>Sign Up</Button>
+              <LogInDialogButton />
+              <SignUpDialogButton />
 
             </Stack>
 
