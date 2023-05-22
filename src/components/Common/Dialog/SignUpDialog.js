@@ -1,41 +1,24 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Button, IconButton, DialogTitle, Dialog, Divider, Link, Box, Grid, FormGroup, FormControl, OutlinedInput  } from '@mui/material';
+import { Button, IconButton,
+  DialogTitle, Dialog,
+  Divider, Link, Box, Grid,
+  FormGroup, FormControl, OutlinedInput  } from '@mui/material';
+
 import CloseIcon from '@mui/icons-material/Close';
 import GoogleIcon from '@mui/icons-material/Google';
 import PasswordCheck from '../Password/PasswordCheck.js';
+
+import { ErrorAlert, useErrorMessage } from './../Alert/ErrorAlert';
+import { signUp } from './../../../services/userManager';
+
 import { themeColors } from './../../../utils/colors.js';
 import './Dialog.css'
+import { useTranslation } from 'react-i18next';
 
-export default function SignUpDialogButton() {
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (value) => {
-    setOpen(false);
-  };
-
-  return (
-    <div>
-
-      <Button color='secondary' variant='contained' onClick={handleClickOpen}>Sign Up</Button>
-
-      <SignUpDialog open={open} onClose={handleClose} />
-
-    </div>
-  );
-}
-
-SignUpDialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
-};
-
-function SignUpDialog(props) {
+export default function SignUpDialog(props) {
 
   const lightLinks = createTheme({
     palette: {
@@ -45,20 +28,73 @@ function SignUpDialog(props) {
     }
   });
 
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [passwordValue, setPasswordValue] = useState('');
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [error, handleErrorMessageChange, clearErrorMessage] = useErrorMessage();  
+  const { t, i18n } = useTranslation();
   const { onClose, open } = props;
-  const [showPassword, setShowPassword] = React.useState(false);
 
-  const handleClose = () => onClose();
 
-  const handleListItemClick = (value) => onClose(value);
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value);
+  };
 
-  const handleMouseDownPassword = (event) => event.preventDefault();
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPasswordValue(event.target.value);
+  };
+
+
+  const handleClose = () =>  {
+    onClose();
+  };
+
+  const handleClickShowPassword = () => { 
+    setShowPassword((show) => !show);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const processRegistration = async () => {
+    clearErrorMessage();
+    setIsLoading(true);
+    await sleep(500);
+    await signUp(name, username, email, passwordValue, handleErrorMessageChange);
+    setIsLoading(false);
+  }  
+
+  const processGoogleLogin = async () => {
+    clearErrorMessage();
+    setIsLoading(true);
+    await sleep(500);
+    handleErrorMessageChange('Google auth is not available!');
+    setIsLoading(false);
+  }
+
+  function sleep(ms) {
+    return new Promise(
+      resolve => setTimeout(resolve, ms)
+    );
+  }
 
   return (
     <Dialog onClose={handleClose} open={open}>
-      <DialogTitle sx={{ m: 1, p: 2 }}>Sign up
+      <DialogTitle sx={{ m: 1, p: 2 }}>{t('SignUp.2')}
         {onClose ? (
           <IconButton
             aria-label="close"
@@ -83,9 +119,13 @@ function SignUpDialog(props) {
 
             <Grid container direction='column' justifyContent="center" spacing={{ xs: 2 }}>
 
+              <Grid item xs={2} alignSelf='center'>
+                <ErrorAlert hidden={error.hidden} message={error.message}/>
+              </Grid>
+
               <Grid item xs={2}>
-                <Button fullWidth sx={{ borderRadius: '10px', pr: 10, pl: 10, textTransform: 'none', fontWeight: 'bold' }} variant="outlined" color='secondary' startIcon={<GoogleIcon />}>
-                  Log In with Google
+                <Button onClick={processGoogleLogin} disabled={isLoading} fullWidth sx={{ borderRadius: '10px', pr: 10, pl: 10, textTransform: 'none', fontWeight: 'bold' }} variant="outlined" color='secondary' startIcon={<GoogleIcon />}>
+                  {isLoading ? t('Loading.1') : t('GoogleLogIn.1')}
                 </Button>
               </Grid>
 
@@ -94,30 +134,37 @@ function SignUpDialog(props) {
               </Grid>
 
               <Grid item xs={2}>
-                <span className='text-field-label'>Name</span>
+                <span className='text-field-label'>{t('Fullname.1')}</span>
                 <FormControl fullWidth size="small" variant="outlined">
-                  <OutlinedInput sx={{ borderRadius: '10px', mt: 1 }} color='secondary' type='text' />
+                  <OutlinedInput onChange={handleNameChange} sx={{ borderRadius: '10px', mt: 1 }} color='secondary' type='text' />
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={2}>
+                <span className='text-field-label'>{t('Username.1')}</span>
+                <FormControl fullWidth size="small" variant="outlined">
+                  <OutlinedInput onChange={handleUsernameChange} sx={{ borderRadius: '10px', mt: 1 }} color='secondary' type='text' />
                 </FormControl>
               </Grid>
 
               <Grid item xs={2}>
                 <span className='text-field-label'>Email</span>
                 <FormControl fullWidth size="small" variant="outlined">
-                  <OutlinedInput sx={{ borderRadius: '10px', mt: 1 }} placeholder="example@mail.com" color='secondary' type='text' />
+                  <OutlinedInput onChange={handleEmailChange} sx={{ borderRadius: '10px', mt: 1 }} placeholder="example@mail.com" color='secondary' type='text' />
                 </FormControl>
               </Grid>
 
               <Grid item xs={2}>
 
-                <span className='text-field-label'>Password</span>
-                <PasswordCheck />
+                <span className='text-field-label'>{t('Password.1')}</span>
+                <PasswordCheck password={passwordValue} setPassword={setPasswordValue}/>
                 <div id="password_block_check"></div>
 
               </Grid>
 
               <Grid item xs={2}>
-                <Button fullWidth sx={{ borderRadius: '10px', textTransform: 'none', fontWeight: 'bold' }} variant='contained' color='secondary'>
-                  Sign up
+                <Button onClick={processRegistration} disabled={isLoading} fullWidth sx={{ borderRadius: '10px', textTransform: 'none', fontWeight: 'bold' }} variant='contained' color='secondary'>
+                  {isLoading ? t('Loading.1') : t('SignUp.2')}
                 </Button>
               </Grid>
 
@@ -128,8 +175,8 @@ function SignUpDialog(props) {
                 </Grid>
 
                 <Grid item xs={2} textAlign='center'>
-                  <p>Already have an account?</p>
-                  <Link sx={{ fontWeight: 'bold' }} href='#' underline="hover">Log in</Link>
+                  <p>{t('HaveAccount.1')}</p>
+                  <Link onClick={handleClose} sx={{ fontWeight: 'bold' }} href='#' underline="hover">{t('LogIn.2')}</Link>
                 </Grid>
 
               </ThemeProvider>
@@ -142,3 +189,8 @@ function SignUpDialog(props) {
     </Dialog>
   );
 }
+
+SignUpDialog.propTypes = {
+  onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+};

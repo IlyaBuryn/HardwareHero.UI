@@ -3,7 +3,12 @@ import { Button, Container, Grid, Paper, Typography } from '@mui/material';
 import './HomeMain.css';
 import MainCircleRowLinks from '../../Common/Home/MainCircleRowLinks';
 
+import { useTranslation } from 'react-i18next';
+
 const HomeMain = () => {
+
+  const { t, i18n } = useTranslation();
+
   return(
     <main>
     <Paper sx={{
@@ -48,7 +53,7 @@ const HomeMain = () => {
               </Typography>
 
               <Button variant='contained' color='secondary'>
-                Learn more
+                {t('Options.LearnMore')}
               </Button>
 
             </div>

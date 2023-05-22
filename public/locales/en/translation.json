@@ -1,0 +1,64 @@
+{
+  "Base": {
+    "1": "Base"
+  },
+  "LogIn": {
+    "1": "Log In",
+    "2": "Log in"
+  },
+  "GoogleLogIn": {
+    "1": "Log in with Google"
+  },
+  "SignUp": {
+    "1": "Sign Up",
+    "2": "Sign up",
+
+    "3": "Sign Up"
+  },
+  "ForgotPassword": {
+    "1": "Forgot password?"
+  },
+  "Password": {
+    "1": "Password"
+  },
+  "RememberMe": {
+    "1": "Remember me"
+  },
+  "HaveAccount": {
+    "0": "Don't have an account?",
+    "1": "Already have an account?"
+  },
+  "Name": {
+    "1": "Name"
+  },
+  "Fullname": {
+    "1": "Full name"
+  },
+  "Username": {
+    "1": "Username"
+  },
+  "Loading": {
+    "1": "Loading..."
+  },
+  "Logout": {
+    "1": "logout"
+  },
+  "Find": {
+    "1": "Find..."
+  },
+  "Options": {
+    "Home": "Home",
+
+    "AboutUs": "About Us",
+    "Help": "Help",
+    "Contacts": "Contact",
+
+    "Aggregator": "Aggregator",
+    "Prices": "Prices",
+    "Services": "Services",
+    "Configurator": "Configurator",
+    "Contributors": "For contributors",
+    "Account": "Account",
+    "LearnMore": "Learn more"
+  }
+}

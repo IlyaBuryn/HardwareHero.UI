@@ -1,29 +1,53 @@
-import { AppBar, Box, Button, Container, IconButton, ImageList, ImageListItem, Stack, Toolbar, Typography } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom'
+import { AppBar, Box, Button, Container, Stack, Toolbar, Typography } from '@mui/material';
 import './Header.css';
 import logo from './../../../images/tmplogo.png'
-import LogInDialogButton from '../../Common/Dialog/LogInDialog';
-import SignUpDialogButton from '../../Common/Dialog/SignUpDialog';
+
+import LogInDialogButton from '../../Common/Dialog/DialogButtons/LogInDialogButton.js';
+import SignUpDialogButton from '../../Common/Dialog/DialogButtons/SignUpDialogButton.js';
+import LanguageMenu from '../../Common/Menu/LanguageMenu';
+
+import { checkAccessTokenExpire, getUserFromCookie } from './../../../services/userManager.js';
+import LogoutButton from '../../Common/Buttons/LogoutButton';
 
 const Header = () => {
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    setUser(getUserFromCookie());
+  }, []);
+  
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position='fixed'>
         <Container fixed>
           <Toolbar>
 
-            <IconButton edge='start' color='inherit' aria-label='menu' sx={{ mr: 2 }}>
-              <MenuIcon />
-            </IconButton>
+            <LanguageMenu />
 
             <Typography variant='h6' sx={{ flexGrow: 1 }}></Typography>
 
-            <img className='logo-center' src={logo} alt='logo' />
+            <Link to="/home">
+              <img className='logo-center' src={logo} alt='logo' />
+            </Link>
 
             <Stack spacing={2} direction='row'>
+            {
+              user && user.accessToken && user.userName && !checkAccessTokenExpire() ? (
+                <>
+                  <p>{user.userName}</p>
+                  <LogoutButton />
+                </>
+              ) : (
+                <>
+                  <LogInDialogButton />
+                  <SignUpDialogButton />
+                </>
+              )
+            }
 
-              <LogInDialogButton />
-              <SignUpDialogButton />
 
             </Stack>
 

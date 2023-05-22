@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { FormControl, OutlinedInput, InputAdornment, IconButton } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-function PasswordCheck() {
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [password, setPassword] = React.useState('');
+const PasswordCheck = ({ password, setPassword }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  // const [password, setPassword] = useState('');
 
   const handleChangePassword = (event) => {
     setPassword(event.target.value);

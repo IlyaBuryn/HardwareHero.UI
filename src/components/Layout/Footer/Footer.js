@@ -6,6 +6,8 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import logo from './../../../images/tmplogo.png'
 import './Footer.css'
 
+import { useTranslation } from 'react-i18next';
+
 const buttonFontSizeTheme = createTheme({
   typography: {
 
@@ -17,6 +19,9 @@ const buttonFontSizeTheme = createTheme({
 });
 
 const Footer = () => {
+
+  const { t, i18n } = useTranslation();
+
     return (
       <footer>
         <Box sx={{ flexGrow: 1, mt: 'auto' }}>
@@ -30,11 +35,12 @@ const Footer = () => {
                   <Stack spacing={4} direction='row' justifyContent="center" alignItems="center">
                     <ThemeProvider theme={buttonFontSizeTheme}>
 
-                      <Button color='inherit'>About Us</Button>
-                      <Button color='inherit'>Products</Button>
-                      <Button color='inherit'>Awards</Button>
-                      <Button color='inherit'>Help</Button>
-                      <Button color='inherit'>Contact</Button>
+                      <Button color='inherit'>{t('Options.AboutUs')}</Button>
+                      <Button color='inherit'>{t('Options.Prices')}</Button>
+                      <Button color='inherit'>{t('Options.Account')}</Button>
+                      <Button color='inherit'>{t('Options.Contributors')}</Button>
+                      <Button color='inherit'>{t('Options.Help')}</Button>
+                      <Button color='inherit'>{t('Options.Contacts')}</Button>
 
                     </ThemeProvider>
                   </Stack>
