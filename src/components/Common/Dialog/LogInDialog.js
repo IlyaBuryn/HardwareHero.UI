@@ -14,6 +14,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import { ErrorAlert, useErrorMessage } from './../Alert/ErrorAlert';
+import { SuccessSnackbar, useSuccessMessage } from '../Snackbar/SuccessSnackbar';
 import { signIn } from './../../../services/userManager';
 
 import { themeColors } from './../../../utils/colors.js';
@@ -38,8 +39,9 @@ export default function LogInDialog(props) {
   const [isLoading, setIsLoading] = useState(false);
 
   const [error, handleErrorMessageChange, clearErrorMessage] = useErrorMessage();  
+  const [alert, handleSuccessMessageChange, clearSuccessMessage] = useSuccessMessage();
   const { t, i18n } = useTranslation();
-  const { onClose, open } = props;
+  const { onClose, open, onChange } = props;
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -57,6 +59,10 @@ export default function LogInDialog(props) {
     onClose();
   };
 
+  const handleChange = () => {
+    onChange();
+  }
+
   const handleClickShowPassword = () => { 
     setShowPassword((show) => !show);
   };
@@ -68,8 +74,8 @@ export default function LogInDialog(props) {
   const processLogin = async () => {
     clearErrorMessage();
     setIsLoading(true);
+    const callbackMessage = await signIn(username, password, rememberLogin, handleErrorMessageChange);
     await sleep(500);
-    await signIn(username, password, rememberLogin, handleErrorMessageChange);
     setIsLoading(false);
   };
 
@@ -86,6 +92,7 @@ export default function LogInDialog(props) {
       resolve => setTimeout(resolve, ms)
     );
   }
+
 
   return (
     <Dialog onClose={handleClose} open={open}>
@@ -118,11 +125,11 @@ export default function LogInDialog(props) {
                 <ErrorAlert hidden={error.hidden} message={error.message}/>
               </Grid>
 
-              <Grid item xs={2}>
+              {/* <Grid item xs={2}>
                 <Button onClick={processGoogleLogin} fullWidth disabled={isLoading} sx={{ borderRadius: '10px', pr: 10, pl: 10, textTransform: 'none', fontWeight: 'bold' }} variant="outlined" color='secondary' startIcon={<GoogleIcon />}>
                   {isLoading ? t('Loading.1') : t('GoogleLogIn.1')}
                 </Button>
-              </Grid>
+              </Grid> */}
 
               <Grid item xs={2}>
                 <Divider variant="middle" color='black' />
@@ -177,7 +184,7 @@ export default function LogInDialog(props) {
 
                 <Grid item xs={2} textAlign='center'>
                   <p>{t('HaveAccount.0')}</p>
-                  <Link onClick={handleClose} sx={{ fontWeight: 'bold' }} href='#' underline="hover">{t('SignUp.2')}</Link>
+                  <Link onClick={handleChange} sx={{ fontWeight: 'bold' }}  underline="hover">{t('SignUp.2')}</Link>
                 </Grid>
                 </ThemeProvider>
 
@@ -193,4 +200,5 @@ export default function LogInDialog(props) {
 LogInDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
+  onChange: PropTypes.func.isRequired,
 };

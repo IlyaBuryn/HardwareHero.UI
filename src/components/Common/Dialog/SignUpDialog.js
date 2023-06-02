@@ -38,7 +38,7 @@ export default function SignUpDialog(props) {
 
   const [error, handleErrorMessageChange, clearErrorMessage] = useErrorMessage();  
   const { t, i18n } = useTranslation();
-  const { onClose, open } = props;
+  const { onClose, open, onChange } = props;
 
 
   const handleNameChange = (event) => {
@@ -62,6 +62,10 @@ export default function SignUpDialog(props) {
     onClose();
   };
 
+  const handleChange = () => {
+    onChange();
+  }
+
   const handleClickShowPassword = () => { 
     setShowPassword((show) => !show);
   };
@@ -74,7 +78,7 @@ export default function SignUpDialog(props) {
     clearErrorMessage();
     setIsLoading(true);
     await sleep(500);
-    await signUp(name, username, email, passwordValue, handleErrorMessageChange);
+    const callbackMessage = await signUp(name, username, email, passwordValue, handleErrorMessageChange);
     setIsLoading(false);
   }  
 
@@ -123,11 +127,11 @@ export default function SignUpDialog(props) {
                 <ErrorAlert hidden={error.hidden} message={error.message}/>
               </Grid>
 
-              <Grid item xs={2}>
+              {/* <Grid item xs={2}>
                 <Button onClick={processGoogleLogin} disabled={isLoading} fullWidth sx={{ borderRadius: '10px', pr: 10, pl: 10, textTransform: 'none', fontWeight: 'bold' }} variant="outlined" color='secondary' startIcon={<GoogleIcon />}>
                   {isLoading ? t('Loading.1') : t('GoogleLogIn.1')}
                 </Button>
-              </Grid>
+              </Grid> */}
 
               <Grid item xs={2}>
                 <Divider variant="middle" color='black' />
@@ -176,7 +180,7 @@ export default function SignUpDialog(props) {
 
                 <Grid item xs={2} textAlign='center'>
                   <p>{t('HaveAccount.1')}</p>
-                  <Link onClick={handleClose} sx={{ fontWeight: 'bold' }} href='#' underline="hover">{t('LogIn.2')}</Link>
+                  <Link onClick={handleChange} sx={{ fontWeight: 'bold' }}  underline="hover">{t('LogIn.2')}</Link>
                 </Grid>
 
               </ThemeProvider>
@@ -193,4 +197,5 @@ export default function SignUpDialog(props) {
 SignUpDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
+  onChange: PropTypes.func.isRequired,
 };

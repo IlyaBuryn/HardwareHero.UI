@@ -11,11 +11,9 @@ export default function DeepList({ list, handleValueClick }) {
       <div>{list.isCpuManufacturer ? 'CPU Manufacturer' : 'Manufacturer'}:</div>
       {list.map(manufacturer => (
         manufacturer.values && (
-          <ul>
-            <Button key={manufacturer.name} onClick={() => handleValueClick(manufacturer.name)}>
-              {manufacturer.name}
-            </Button>
-          </ul>
+          <Button key={manufacturer.name} sx={{ m: 0.5 }} variant="outlined" color="secondary" onClick={() => handleValueClick(manufacturer.name)}>
+            {manufacturer.name}
+          </Button>
       )))}
     </li>
   )

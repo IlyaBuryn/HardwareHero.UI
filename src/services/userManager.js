@@ -1,3 +1,5 @@
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 import { postOne, getJsonResponse } from './../utils/clientConnect';
@@ -24,11 +26,12 @@ export async function signIn(username, password, rememberLogin, handleErrorMessa
 
   var responseJson = await getJsonResponse(responseBody, handleErrorMessageChange)
 
-  if (responseJson) {
-    console.log(responseJson);
+  if (responseJson && responseBody.ok) {
     setUserToCookie(responseJson);
-    window.location.reload();
+    localStorage.setItem('successMessage', 'Вы успешно вошли!');
+    CheckAndRedirect();
   }
+  return null;
 }
 
 export async function signUp(fullName, username, email, password, handleErrorMessageChange) {
@@ -49,11 +52,16 @@ export async function signUp(fullName, username, email, password, handleErrorMes
 
   var responseJson = await getJsonResponse(responseBody, handleErrorMessageChange)
 
-  if (responseJson) {
-    console.log(responseJson);
+  if (responseJson && responseBody.ok) {
     setUserToCookie(responseJson);
-    window.location.reload();
+    localStorage.setItem('successMessage', 'Вы успешно зарегистрировались!');
+    CheckAndRedirect();
   }
+  return null;
+}
+
+export function CheckAndRedirect() {
+  window.location.reload();
 }
 
 export async function logout(handleErrorMessageChange) {
@@ -69,7 +77,9 @@ export async function logout(handleErrorMessageChange) {
     Cookies.remove('fullName');
     Cookies.remove('roles');
 
-    window.location.reload();
+    localStorage.setItem('successMessage', 'Вы успешно вышли!');
+    CheckAndRedirect();
+    return null;
   }
   catch (ex) {
     console.log("Error");
@@ -125,8 +135,43 @@ export function checkAccessTokenExpire() {
   const tokenExpirationTime = tokenIssuedAt + expiresIn;
 
   if (currentTime >= tokenExpirationTime) {
-    return true; // Токен истек
+    return true;
   } else {
-    return false; // Токен действителен
+    return false;
   }
+}
+
+export function isSessionUser() {
+  try {
+    var user = getUserFromCookie();
+    if (user && user.accessToken && user.userName && !checkAccessTokenExpire()) {
+      return true;
+    }
+    return false;
+  }
+  catch (ex) {
+    return false;
+  }
+}
+
+export function getUserRole() {
+  const user = getUserFromCookie();
+  const roles = ['Admin', 'Manager', 'Contributor', 'User'];
+  if (user && isSessionUser) {
+    for (let role of roles) {
+      if (user.roles.includes(role)) {
+        return role;
+      }
+    }
+  }
+}
+
+export function checkUserRole(role) {
+  const user = getUserFromCookie();
+  if (user !== null && isSessionUser() === true) {
+    if (user.roles.includes(role)) {
+      return true;
+    }
+  }
+  return false;
 }

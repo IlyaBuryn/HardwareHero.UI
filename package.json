@@ -9,6 +9,7 @@
     "@mui/material": "^5.12.3",
     "@mui/styles": "^5.12.3",
     "axios": "^1.4.0",
+    "file-saver": "^2.0.5",
     "i18next": "^22.4.15",
     "i18next-browser-languagedetector": "^7.0.1",
     "i18next-http-backend": "^2.2.0",

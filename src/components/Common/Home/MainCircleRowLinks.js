@@ -29,18 +29,6 @@ const Item = styled(Paper)(({ theme }) => ({
   margin: 20
 }));
 
-const getTest = async () => {
-  var response = await fetch(
-    'gateway/contributor',
-    {
-      method: 'get'
-    }
-  )
-
-  var responsejson = await response.json();
-  console.log(responsejson);
-}
-
 const MainCircleRowLinks = () => {
 
   const { t, i18n } = useTranslation();
@@ -51,18 +39,22 @@ const MainCircleRowLinks = () => {
         <Stack spacing={25} direction='row' justifyContent="center" alignItems="center">
 
           <Item elevation={0}>
-            <CustomIconButton onClick={getTest} size="large">
-              <LocalOfferIcon sx={{ fontSize: 100, color: 'white' }}/>
-            </CustomIconButton> 
+            <Link to="/prices">
+              <CustomIconButton size="large">
+                <LocalOfferIcon sx={{ fontSize: 100, color: 'white' }}/>
+              </CustomIconButton> 
+            </Link>
             <h2>{t('Options.Prices')}</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
           </Item>
 
           <Item elevation={0}>
-            <CustomIconButton size="large">
-              <HomeRepairServiceIcon sx={{ fontSize: 100, color: 'white' }}/>
-            </CustomIconButton>
-            <h2>{t('Options.Services')}</h2>
+            <Link to="/account">
+              <CustomIconButton size="large">
+                <AccountCircleIcon sx={{ fontSize: 100, color: 'white' }}/>
+              </CustomIconButton> 
+            </Link>
+            <h2>{t('Options.Account')}</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
           </Item>
 
@@ -73,7 +65,7 @@ const MainCircleRowLinks = () => {
               </CustomIconButton>
             </Link>
             <h2>{t('Options.Configurator')}</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+            <p>{t('HomeButtonsDescription.configurator')}</p>
           </Item>
           
         </Stack>
@@ -85,17 +77,21 @@ const MainCircleRowLinks = () => {
         <Stack spacing={25} direction='row' justifyContent="center" alignItems="center">
           
           <Item elevation={0}>
-            <CustomIconButton size="large">
-              <AccountCircleIcon sx={{ fontSize: 100, color: 'white' }}/>
-            </CustomIconButton> 
-            <h2>{t('Options.Account')}</h2>
+            <Link to="/services">
+              <CustomIconButton size="large">
+                <HomeRepairServiceIcon sx={{ fontSize: 100, color: 'white' }}/>
+              </CustomIconButton>
+            </Link>
+            <h2>{t('Options.Services')}</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
           </Item>
 
           <Item elevation={0}>
-            <CustomIconButton size="large">
-              <HandshakeIcon sx={{ fontSize: 100, color: 'white' }}/>
-            </CustomIconButton>
+            <Link to="/contributor">
+              <CustomIconButton size="large">
+                <HandshakeIcon sx={{ fontSize: 100, color: 'white' }}/>
+              </CustomIconButton>
+            </Link>
             <h2>{t('Options.Contributors')}</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
           </Item>

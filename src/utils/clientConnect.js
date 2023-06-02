@@ -57,7 +57,7 @@ export async function getAll(route, errorHandler, data, headers) {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Authorization': getAccessTokenFromCookie(),
-        headers
+        ...headers
       },
       credentials: 'include',
       body: data
@@ -71,7 +71,22 @@ export async function getAll(route, errorHandler, data, headers) {
 }
 
 export async function getOne(route, errorHandler, headers) {
+  try {
+    const response = await fetch(route, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': getAccessTokenFromCookie(),
+        ...headers
+      }
+    });
 
+    return response;
+  }
+  catch (ex) {
+    errorHandler('Server is unavailable!');
+  }
 }
 
 export async function putOne(route, errorHandler, data, headers) {
@@ -79,5 +94,42 @@ export async function putOne(route, errorHandler, data, headers) {
 }
 
 export async function deleteOne(route, errorHandler, headers) {
+  try {
+    const response = await fetch(route, {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': getAccessTokenFromCookie(),
+        ...headers
+      }
+    });
 
+    return response;
+  }
+  catch (ex) {
+    errorHandler('Server is unavailable!');
+  }
+}
+
+export async function uploadImage(route, errorHandler, file, fileName) {
+
+  console.log('fileName:', fileName)
+  const formData = new FormData();
+  formData.append('image', file, fileName);
+
+  try {
+    const response = await fetch(route, {
+      method: 'POST',
+      headers: {
+        'Authorization': getAccessTokenFromCookie(),
+      },
+      body: formData,
+    });
+  
+    return response
+    
+  } catch (error) {
+    errorHandler('Server is unavailable!');
+  }
 }

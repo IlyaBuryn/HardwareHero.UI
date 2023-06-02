@@ -56,7 +56,7 @@ const Footer = () => {
 
                 <Grid item xs={8} sx={{ flexGrow: 1, flexShrink: 1, p: 3 }}>
                   <Typography sx={{ textAlign: 'center' }}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam mattis malesuada lacus, in vestibulum enim rhoncus vitae. Quisque porta, enim eu consequat vestibulum, elit purus sodales justo, sit amet ultrices elit leo nec augue. Cras rhoncus, massa sed sollicitudin gravida, ligula felis gravida turpis, at pellentesque lorem massa non magna. Proin consequat, est sed varius imperdiet, urna risus congue lectus, euismod facilisis ante sapien vestibulum justo. Sed scelerisque vel libero nec pharetra. In venenatis, tortor at fermentum pharetra, justo turpis faucibus magna, eu faucibus ipsum mauris ut orci. Proin quis est et ex convallis ultrices.
+                    {t('HomeDescription.1')}
                   </Typography>
                 </Grid>
 

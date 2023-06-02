@@ -19,8 +19,7 @@ const HomeMain = () => {
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
-      }} style={{ backgroundImage: `url(https://source.unsplash.com/featured)`}} >
-
+      }} style={{ backgroundImage: `url(https://static1.makeuseofimages.com/wordpress/wp-content/uploads/2018/11/dark-wallpapers.jpg?q=50&fit=contain&w=1140&h=&dpr=1.5)`}} >
       <Container fixed>
 
         <div sx={{
@@ -45,11 +44,8 @@ const HomeMain = () => {
                 HardwareHero
               </Typography>
 
-              <Typography variant='h5' color='inherit' paragraph>
-                Lorem ipsum dolor sit amet, 
-                consectetur adipiscing elit, 
-                sed do eiusmod tempor incididunt 
-                ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+              <Typography variant='h6' color='inherit' sx={{ width: 600}} paragraph>
+                {t("HomeDescription.1")}
               </Typography>
 
               <Button variant='contained' color='secondary'>

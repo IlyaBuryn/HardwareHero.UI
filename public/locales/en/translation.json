@@ -46,6 +46,22 @@
   "Find": {
     "1": "Find..."
   },
+  "WelcomeToAccount": {
+    "1": "Welcome to you'r account!"
+  },
+  "MyAccount": {
+    "1": "My Account"
+  },
+  "PCValue": {
+    "general": "PC Total",
+    "price": "Price"
+  },
+  "HomeDescription": {
+    "1": "Are you looking for the best computer parts at competitive prices? Then you need our aggregator, which collects information about products from different stores and allows you to compare their characteristics and prices. With our aggregator, you can easily find the perfect kit for your PC using a convenient online configurator."
+  },
+  "HomeButtonsDescription": {
+    "configurator": "Just select the components you need from the list and you will receive a complete assembly with the total price and place of purchase. Our aggregator will help you save time and money on searching and buying computer components."
+  },
   "Options": {
     "Home": "Home",
 
