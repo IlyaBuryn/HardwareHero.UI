@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { themeColors } from './../../../utils/colors.js';
-import { Container, Typography, TextField, Button, Stack, Paper, Box, Tooltip, IconButton, Avatar, Grid } from '@mui/material';
+import { Container, Typography, TextField, Button, Stack, Paper, Box, Tooltip, IconButton, Avatar, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Header from '../../Layout/Header/Header';
 import Footer from '../../Layout/Footer/Footer';
@@ -187,6 +187,20 @@ const ProfilePage = () => {
                   <Grid item xs={6}>
                     <Item elevation={0}>
                       <TextField disabled id="outlined-disabled" defaultValue={user.accessToken}/>
+                    </Item>
+                  </Grid>
+
+
+                  <Grid item xs={12}>
+                    <Item elevation={0}>
+                      <FormControl fullWidth>
+                        <InputLabel id="region-label">Выбор валюты</InputLabel>
+                        <Select labelId="region-label" id="region-select">
+                          <MenuItem value="region1">BYN р.</MenuItem>
+                          <MenuItem value="region2">RUB р.</MenuItem>
+                          <MenuItem value="region3">USD $</MenuItem>
+                        </Select>
+                      </FormControl>
                     </Item>
                   </Grid>
 

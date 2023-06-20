@@ -4,6 +4,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  Typography,
   TableContainer,
   Paper,
   CircularProgress,
@@ -28,6 +29,7 @@ import { useTranslation } from 'react-i18next';
 import ConfiguratorRow from '../../Common/Table/ConfiguratorRow';
 import { getAssembliesByUserId, saveAsseblyToDatabase, saveJsonAsembly } from '../../../services/assemblyManager';
 import { getUserFromCookie, isSessionUser } from '../../../services/userManager';
+import CanvasGraph from '../../Common/Graph/CanvasGraph';
 
 const baseImageUrl = 'http://localhost/images/';
 
@@ -40,6 +42,23 @@ const getSpecificationValues = (specifications, property) => {
   });
   return values;
 };
+
+const superData = [
+  {
+    id: 1,
+    image: "https://ram.by/images/logo.png",
+    name: "Ram.by",
+    quantity: 149.99,
+    prices: [ 149.99, 200, 159.99, 149.99,]
+  },
+  {
+    id: 2,
+    image: "https://imgproxy.onliner.by/2zEP45MryJX_vTY39kUaP0bn69iivuOYU2GTlfbEX48/w:152/h:56/dpr:2/f:webp/aHR0cHM6Ly9jb250/ZW50Lm9ubGluZXIu/YnkvYjJiLzI2MTEv/bG9nb3R5cGUvNDkw/NDg5ZTY5M2JmMDUw/MWQ3Y2ZhZWJmMDI1/YTlmZmMuanBlZw",
+    name: "KST",
+    quantity: 130.59,
+    prices: [ 120.59, 130.59, 120.59, 130.59,]
+  }
+];
 
 const getManufacturerValues = (specifications, property) => {
   const values = [];
@@ -201,7 +220,7 @@ const ConfiguratorMain = ({ readyComponents }) => {
               <TableBody>
 
                 <TableRow>
-                  <TableCell colSpan={2}>
+                  <TableCell colSpan={3}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: 'black' }}>
                       <Box sx={{ fontWeight: 'bold' }}>{t("PCValue.general")}</Box>
                     </Box>
@@ -209,28 +228,68 @@ const ConfiguratorMain = ({ readyComponents }) => {
                 </TableRow>
 
                 {assembly.map((item, index) => (
-                  <TableRow>
-                    <TableCell>
-                      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: 'black' }}>
-                        <Avatar
-                          alt={item.componentImage}
-                          src={baseImageUrl + item.componentImage}
-                          variant="rounded"
-                          sx={{ width: 48, height: 48 }}
-                        />
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: 'black' }}>
-                        <Box sx={{ mt: 1.5 }}>{item.item.name }</Box>
-                        <Box sx={{ mt: 1.5 }}>{item.index}</Box>
-                      </Box>
-                    </TableCell>
-                  </TableRow>
+                  <>
+                    <TableRow>
+
+                      <TableCell colSpan={1}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: 'black' }}>
+                          <Avatar
+                            alt={item.componentImage}
+                            src={baseImageUrl + item.componentImage}
+                            variant="rounded"
+                            sx={{ width: 48, height: 48 }}
+                          />
+                        </Box>
+                      </TableCell>
+
+                      <TableCell colSpan={1}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: 'black' }}>
+                          <Box sx={{ mt: 1.5 }}>{item.item.name }</Box>
+                          <Box sx={{ mt: 1.5 }}>{item.index}</Box>
+                        </Box>
+                      </TableCell>
+
+                      <TableCell colSpan={1}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: 'black' }}>
+                          <Button variant='outlined'>Цены</Button>
+                          <Button sx={{mt: 2}} variant='contained'>Перейти</Button>
+                        </Box>
+                      </TableCell>
+
+                    </TableRow>
+
+                    {/* <TableRow>
+                      {superData.map((item) => (
+                        <TableCell colSpan={1}>
+                           <div style={{ overflowX: 'auto', width: 150 }}>
+                            <Stack sx={{ m: 2 }} direction="row" alignItems="center">
+                              <Box width="150px">
+                                <Stack direction="column" sx={{ width: '150px' }} alignItems="center">
+                                  <Avatar
+                                    alt={`Image ${item.id}`}
+                                    src={item.image}
+                                    variant="rounded"
+                                    sx={{ width: 48, height: 48, m: 2 }}
+                                  />
+                                  <Typography variant="h6" color="text.secondary">
+                                    {item.name}
+                                  </Typography>
+                                  <Typography variant="body2" component="div">
+                                    Цена в магазине: {item.quantity}
+                                  </Typography>
+                                  <CanvasGraph prices={item.prices} />
+                                </Stack>
+                              </Box>
+                            </Stack>
+                          </div>
+                        </TableCell>
+                      ))}
+                    </TableRow> */}
+                  </>
                 ))}
 
                 <TableRow>
-                  <TableCell colSpan={2}>
+                  <TableCell colSpan={3}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: 'black' }}>
                       <Box sx={{ mt: 1.5, fontWeight: 'bold' }}>{t("PCValue.general")}; {t("PCValue.price")}: ~{assembly.reduce(function(sum, value) {
                               return sum + value.item.initialPrice;
@@ -240,7 +299,7 @@ const ConfiguratorMain = ({ readyComponents }) => {
                 </TableRow>
 
                 <TableRow>
-                  <TableCell colSpan={2}>
+                  <TableCell colSpan={3}>
 
                     { isSessionUser() ? (
                       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: 'black', mb: 2 }}>

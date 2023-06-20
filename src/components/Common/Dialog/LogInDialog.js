@@ -77,6 +77,9 @@ export default function LogInDialog(props) {
     const callbackMessage = await signIn(username, password, rememberLogin, handleErrorMessageChange);
     await sleep(500);
     setIsLoading(false);
+    if (callbackMessage !== null) {
+      window.location.reload();
+    }
   };
 
   const processGoogleLogin = async () => {

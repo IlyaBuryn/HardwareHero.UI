@@ -12,6 +12,7 @@ export default function LogoutButton() {
 
   const handleClick = () => {
     logout(handleErrorMessageChange)
+    window.location.reload();
   };
 
   if (!error.hidden) {

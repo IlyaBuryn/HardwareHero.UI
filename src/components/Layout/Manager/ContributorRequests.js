@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Menu, MenuItem, Avatar, Box, CircularProgress, Container } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Menu, MenuItem, Avatar, Box, CircularProgress, Container, Chip } from '@mui/material';
 import { MoreVert as MoreVertIcon, Done as DoneIcon, Cancel as CancelIcon, Chat as ChatIcon } from '@mui/icons-material';
-import { checkUserRole } from '../../../services/userManager';
-import { getAllContributors } from '../../../services/contributorManager';
+import { checkUserRole, getUserById } from '../../../services/userManager';
+import { acceptContributorRequest, getAllContributors, getContributorByName } from '../../../services/contributorManager';
 import SortIcon from '@mui/icons-material/Sort';
+import FaceIcon from '@mui/icons-material/Face';
+import { ContributorInfoDialog } from '../../Common/Dialog/UserInfoDialogs';
 
 const baseImageUrl = 'http://localhost/images/';
 
 
-const DropdownMenu = () => {
+function DropdownMenu({ contributorName }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -21,8 +23,14 @@ const DropdownMenu = () => {
     setAnchorEl(null);
   };
 
-  const handleConfirm = () => {
+  const errorHandler = (str) => {
+    localStorage.setItem('errorMessage', str)
+  }
 
+  const handleConfirm = async () => {
+    const contributor = await getContributorByName(errorHandler, contributorName ?? " ");
+    var response = await acceptContributorRequest(errorHandler, contributor)
+    console.log("response: ", response);
   }
 
   const handleDenied = () => {
@@ -43,7 +51,7 @@ const DropdownMenu = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleConfirm}>
           <IconButton size="small">
             <DoneIcon />
           </IconButton>
@@ -74,6 +82,10 @@ export default function ContributorRequests() {
   const [isLoadingScreen, setIsLoadingScreen] = useState(true);
   const [sortDirection, setSortDirection] = useState('asc');
   const [sortedColumn, setSortedColumn] = useState('');
+
+  const [showContributorInfo, setShowContributorInfo] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
+
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -119,9 +131,9 @@ export default function ContributorRequests() {
   const theme = createTheme({
     palette: {
       confirmed: {
-        main: '#a3b18a',
-        secondary: '#e5989b',
-        new: '#ede0d4'
+        main: '#82C0CC', // isConfirmed == true
+        secondary: '#BC2C1A', // isConfirmed == false
+        new: '#EDE7E3' // new
       },
     },
   });
@@ -137,7 +149,29 @@ export default function ContributorRequests() {
       return 'Denied'
     }
   }
+
+  const errorHandler = (str) => {
+    localStorage.setItem('errorMessage', str);
+  }
   
+  const handleContributorInfoClick = async (item) => {
+    console.log(item)
+    var user = await getUserById(item.id, errorHandler);
+    console.log('user', user)
+    if (user !== null) {
+      const updatedUser = { ...user, ...item };
+      setUserInfo(updatedUser);
+      setShowContributorInfo(true);
+    }
+    else {
+      await errorHandler('Нет информации об этом пользователе!');
+    }
+  };
+
+  const handleContributorInfoClose = () => {
+    setShowContributorInfo(false);
+    setUserInfo(null);
+  };
 
   useEffect(() => {
     setIsLoadingScreen(true)
@@ -158,76 +192,89 @@ export default function ContributorRequests() {
   }
   else {
     return (
-      <Container fixed>
-        <ThemeProvider theme={theme}>
-          <TableContainer elevation={5} component={Paper} style={{ margin: '20px auto' }}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell style={{ maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Guid</TableCell>
-                  <TableCell>Region
-                    <IconButton onClick={() => handleSort('region')} >
-                      <SortIcon />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell>Is Confirmed
-                    <IconButton onClick={() => handleSort('isConfirmed')} >
-                      <SortIcon />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell>Name
-                    <IconButton onClick={() => handleSort('name')} >
-                      <SortIcon />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell>Email
-                    <IconButton onClick={() => handleSort('email')} >
-                      <SortIcon />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell>Logo</TableCell>
-                  <TableCell>Date
-                    <IconButton onClick={() => handleSort('date')} >
-                      <SortIcon />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell>Options</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {data.map((item) => (
-                  <TableRow key={item.id} sx={item.isConfirmed === null ? {backgroundColor: theme.palette.confirmed.new} : (item.isConfirmed === true ? { backgroundColor: theme.palette.confirmed.main } : {backgroundColor: theme.palette.confirmed.secondary})}>
-                    <TableCell style={{ maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.id}</TableCell>
-                    <TableCell>{item.region}</TableCell>
-                    <TableCell>{showStatus(item.isConfirmed)}</TableCell>
-                    <TableCell>{item.contributorExcellence.name}</TableCell>
-                    {/* Should be Email */}
-                    <TableCell style={{ maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.userId}</TableCell>
-                    <TableCell>
-                      <Avatar
-                        alt="Logo"
-                        src={baseImageUrl + item.contributorExcellence.logo}
-                        variant="rounded"
-                        sx={{ width: 64, height: 64 }}
-                      />
+      <>
+        {showContributorInfo === true ? (
+          <ContributorInfoDialog open={showContributorInfo} onClose={handleContributorInfoClose} user={userInfo}/>
+        ) : (null)}
+
+        <Container maxWidth="1350px">
+          <ThemeProvider theme={theme}>
+            <TableContainer elevation={5} component={Paper} style={{ margin: '20px auto' }}>
+              <Table>
+                <TableHead height={45} sx={{ overflow: 'auto'}}>
+                  <TableRow>
+                    <TableCell style={{ maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Guid</TableCell>
+                    
+                    <TableCell>Region
+                      <IconButton onClick={() => handleSort('region')} >
+                        <SortIcon />
+                      </IconButton>
                     </TableCell>
-                    <TableCell>{item.timeStamp}</TableCell>
-                    <TableCell>
-                      {item.isConfirmed ? (
-                        <IconButton size="small">
-                          <ChatIcon />
-                        </IconButton>
-                      ) : (
-                        <DropdownMenu />
-                      )}
+
+                    <TableCell>Is Confirmed
+                      <IconButton onClick={() => handleSort('isConfirmed')} >
+                        <SortIcon />
+                      </IconButton>
                     </TableCell>
+
+                    <TableCell>Info</TableCell>
+
+                    <TableCell>Logo</TableCell>
+
+                    <TableCell>Date
+                      <IconButton onClick={() => handleSort('date')} >
+                        <SortIcon />
+                      </IconButton>
+                    </TableCell>
+
+                    <TableCell>Options</TableCell>
+
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </ThemeProvider>  
-      </Container>
+                </TableHead>
+                <TableBody>
+                  {data.map((item) => (
+                    <TableRow key={item.id} sx={item.isConfirmed === null ? {backgroundColor: theme.palette.confirmed.new} :
+                     (item.isConfirmed === true ? { backgroundColor: theme.palette.confirmed.main } :
+                      {backgroundColor: theme.palette.confirmed.secondary})}>
+                      <TableCell style={{ maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.id}</TableCell>
+                      
+                      <TableCell>{item.region}</TableCell>
+                      
+                      <TableCell>{showStatus(item.isConfirmed)}</TableCell>
+
+                      <TableCell>
+                        <Chip icon={<FaceIcon />} onClick={() => handleContributorInfoClick(item)} label="User info" />
+                      </TableCell>
+                      
+                      <TableCell>
+                        <Avatar
+                          alt="Logo"
+                          src={baseImageUrl + item.contributorExcellence.logo}
+                          variant="rounded"
+                          sx={{ width: 64, height: 64 }}
+                        />
+                      </TableCell>
+                      
+                      <TableCell>{item.timeStamp}</TableCell>
+                      
+                      <TableCell>
+                        {item.isConfirmed ? (
+                          <IconButton size="small">
+                            <ChatIcon />
+                          </IconButton>
+                        ) : (
+                          <DropdownMenu contributorName={item.contributorExcellence.name}/>
+                        )}
+                      </TableCell>
+                    
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </ThemeProvider>  
+        </Container>
+      </>
     );
   }
 };

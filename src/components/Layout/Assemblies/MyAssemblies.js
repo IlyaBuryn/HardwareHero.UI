@@ -57,8 +57,13 @@ const MyAssemblies = ({ assemblies, errorHandler }) => {
             </Stack>       
 
             <Button onClick={() => {navigate('/configurator', { state: { readyComponents: components } })}} variant="contained" color="primary">
-              Просмотр
+              Просмотр в конфигураторе
             </Button>
+
+            <Button variant='outlined' color="primary">
+              Просмотр цен
+            </Button>
+
           </AccordionDetails>
 
         </Accordion>

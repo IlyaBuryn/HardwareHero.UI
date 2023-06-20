@@ -11,10 +11,10 @@ export default function ContributorMenu() {
           <Grid item xs={4}>
             <Box sx={{ mt: 10, ml: 5 }}>
               <Stack direction='column' spacing={2}>
-                <Typography textAlign='center'>Меню партнеров:</Typography>
-                <Button variant='contained'>Chats</Button>
-                <Button variant='contained'>Sub. Plans</Button>
-                <Button variant='contained'></Button>
+                <Typography variant='h6' textAlign='center'>Меню участника:</Typography>
+                <Button variant='contained'>Чаты</Button>
+                <Button variant='contained'>Управление подпиской</Button>
+                <Button variant='contained'>Цены</Button>
                 <Button variant='contained'></Button>
               </Stack>
             </Box>

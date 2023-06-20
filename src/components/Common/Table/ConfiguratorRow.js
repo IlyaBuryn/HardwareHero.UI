@@ -4,7 +4,7 @@ import { TableRow, TableCell,
   Menu, MenuItem,
   ListItemText, ListItemAvatar,
   Typography, InputBase,
-  Avatar, Box, Pagination, Stack  } from "@mui/material";
+  Avatar, Box, Pagination, Stack, Alert, Checkbox, FormControlLabel  } from "@mui/material";
 import { styled, alpha } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -54,6 +54,26 @@ function getSpecificationsList(specifications) {
   });
 
   return combinedProperties;
+};
+
+export const DescriptionTranslator = ({ item }) => {
+  const formattedDescription = item.description.split('\n').map((substring, index) => (
+    <React.Fragment key={index}>
+      {substring}
+      {index !== item.description.length - 1 && (
+        <React.Fragment>
+          {'\u25CF'}
+          <br />
+        </React.Fragment>
+      )}
+    </React.Fragment>
+  ));
+
+  return (
+    <Typography variant="body2">
+      {formattedDescription}
+    </Typography>
+  );
 };
 
 
@@ -161,8 +181,9 @@ export default function ConfiguratorRow({ item, index, assemblyHandler, errorHan
         </Box>
       </TableCell>
 
-      <TableCell>
-        <ul>
+      <TableCell sx={{ maxWidth: 450 }}>
+        <DescriptionTranslator item={item} />
+        {/* <ul>
           {propertyLists.map(specItem => (
             specItem.values && (
               <li key={specItem.name}>
@@ -178,7 +199,7 @@ export default function ConfiguratorRow({ item, index, assemblyHandler, errorHan
             )
           ))}
           <DeepList list={manufacturerList} handleValueClick={handlePropertyValueClick}/>
-        </ul>
+        </ul> */}
       </TableCell>
       
       <TableCell sx={{ maxWidth: 300 }}>
@@ -213,6 +234,9 @@ export default function ConfiguratorRow({ item, index, assemblyHandler, errorHan
                 </>
               }
             />
+            {item.componentNames[0] === 'Processor' || item.componentNames[0] === 'Motherboard' ? (
+              <Alert severity="error">Этот компонент не совместим</Alert>
+              ) : (null)}
 
             <IconButton
               color="error"
@@ -263,25 +287,27 @@ export default function ConfiguratorRow({ item, index, assemblyHandler, errorHan
             getContentAnchorEl={null}
           >
             <Stack direction='row'>
-              <Stack spacing={2} direction='row'>
-                <Search>
+              <Search>
 
-                  <SearchIconWrapper>
-                    <SearchIcon />
-                  </SearchIconWrapper>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
 
-                  <StyledInputBase
-                    placeholder="Search…"
-                    inputProps={{ 'aria-label': 'search' }}
-                    value={searchValue}
-                    onChange={handleSearchChange}
-                  />
-                </Search>
-              </Stack>
+                <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ 'aria-label': 'search' }}
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                />
+              </Search>
+              
+              <Button onClick={handleSearchClick} sx={{ m: 2 }} variant='outlined' color='primary'>Поиск</Button>
 
-              <Stack spacing={2} direction='row' justifyContent='flex-end'>
-                <Button onClick={handleSearchClick} sx={{ m: 2 }} variant='outlined' color='primary'>Поиск</Button>
-              </Stack>
+              <FormControlLabel
+                control={<Checkbox defaultChecked color="secondary" />}
+                label='Автопроверка'
+              />
+
             </Stack>
             
             {menuComponents.map((specification, subIndex) => {

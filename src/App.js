@@ -7,6 +7,7 @@ import ProfilePage from './components/Pages/Profile/ProfilePage';
 import Aggregator from './components/Pages/Aggregator/Aggregator';
 import Contributor from './components/Pages/Contributor/Contributor';
 import ContributorRequestsPage from './components/Pages/Contributor/ContributorRequestsPage';
+import AggregatorOneElement from './components/Layout/Aggregator/AggregatorOneElement';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/prices" element={ <Aggregator /> } />
         <Route path="/contributor" element={ <Contributor /> } />
         <Route path='/contributor-requests' element={ <ContributorRequestsPage /> } />
+        <Route path="/prices/:componentId" element={<AggregatorOneElement />} />
       </Routes>
     </>
   );

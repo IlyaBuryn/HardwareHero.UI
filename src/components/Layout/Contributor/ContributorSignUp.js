@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Paper, TextField, Box, Select, MenuItem, FormControl, InputLabel, Button, CircularProgress } from '@mui/material';
+import { Paper, TextField, Box, Select, MenuItem, FormControl, InputLabel, Button, CircularProgress, Divider } from '@mui/material';
 import { createContributor, getContributorByUserId } from '../../../services/contributorManager';
 import { ErrorAlert, useErrorMessage } from '../../Common/Alert/ErrorAlert';
 import SuccessBox from '../Configurator/SuccessBox';
 import DeniedBox from '../Configurator/DeniedBox';
-import { getUserFromCookie, isSessionUser } from '../../../services/userManager';
+import { getUserFromCookie, isSessionUser, signIn } from '../../../services/userManager';
 
-const regions = ['Беларусь', 'Россия', '(EU)', '(СНГ)'];
+const regions = ['Belarus', 'Russia (Moscow)', 'Russia (Saint Petersburg)', 'Poland'];
 const baseImageUrl = 'http://localhost/images/';
 
 const ContributorSignUp = () => {
@@ -22,6 +22,9 @@ const ContributorSignUp = () => {
   const [paperHeight, setPaperHeight] = useState(0);
   const [isLoadingScreen, setIsLoadingScreen] = useState(false);
 
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+
   const [error, handleErrorMessageChange, clearErrorMessage] = useErrorMessage();  
 
   const handleRegionChange = (event) => {
@@ -36,25 +39,40 @@ const ContributorSignUp = () => {
   };
 
   const handleCompanyName = (event) => {
-    setCompoanyName(event.target.value)
-  }
+    setCompoanyName(event.target.value);
+  };
 
   const handleCompanyUrl = (event) => {
-    setCompanyUrl(event.target.value)
-  }
+    setCompanyUrl(event.target.value);
+  };
+
+  const handleUserNameChange = (event) => {
+    setUserName(event.target.value);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
 
   const submitChanges = async () => {
-    if (!companyName || !companyUrl || !region || !logoUrl) {
+    if (!companyName || !region || !logoUrl || !userName || !password) {
       handleErrorMessageChange('Некоторые поля не заполнены!')
     }
     else {
-      const file = selectedImage
-      const fileExtension = file.name.split('.').pop();
-      const fileName = `${companyName}_logo.${fileExtension}`;
-
-      const response = await createContributor(handleErrorMessageChange, region, companyName, companyUrl, fileName, selectedImage)
-      if (response) {
-        window.location.reload();
+      await signIn(userName, password, true, handleErrorMessageChange)
+      if (isSessionUser()) {
+        const file = selectedImage
+        const fileExtension = file.name.split('.').pop();
+        const fileName = `${companyName}_logo.${fileExtension}`;
+  
+        const response = await createContributor(handleErrorMessageChange, region, companyName, companyUrl, fileName, selectedImage)
+        console.log(response)
+        if (response) {
+          window.location.reload();
+        }
+      }
+      else {
+        await handleErrorMessageChange('Неверный логин или пароль!')
       }
     }
   }
@@ -118,7 +136,7 @@ const ContributorSignUp = () => {
         <div style={{ flex: '1 1 40%', marginRight: '16px' }}>
           <Paper
             elevation={5}
-            sx={{ p: 8, m: 8, ml: 20 }}
+            sx={{ p: 4, m: 8, ml: 20 }}
             ref={(el) => {
               if (el) {
                 setPaperHeight(el.clientHeight);
@@ -129,11 +147,19 @@ const ContributorSignUp = () => {
               <ErrorAlert hidden={error.hidden} message={error.message}/>
               {error.hidden ? ( null ) : ( <><br /></>)}
 
-              <TextField onChange={handleCompanyName} label="Название сайта/компании" variant="outlined" fullWidth />
+              <TextField onChange={handleUserNameChange} label="Имя пользователя или Email" variant="outlined" fullWidth />
               <br />
               <br />
 
-              <TextField onChange={handleCompanyUrl} label="Ссылка на сайт" variant="outlined" fullWidth />
+              <TextField type='password' onChange={handlePasswordChange} label="Пароль" variant="outlined" fullWidth />
+              <br />
+              <br />
+
+              <Divider />
+              <br />
+              <br />
+
+              <TextField onChange={handleCompanyName} label="Название сайта/компании" variant="outlined" fullWidth />
               <br />
               <br />
 

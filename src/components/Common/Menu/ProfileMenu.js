@@ -19,6 +19,7 @@ export default function AccountMenu({ user }) {
 
   const handleLogoutClick = () => {
     logout(handleErrorMessageChange)
+    window.location.reload();
   };
 
   const handleClick = (event) => {

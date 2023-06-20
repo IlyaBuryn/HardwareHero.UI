@@ -38,27 +38,27 @@ const MainCircleRowLinks = () => {
       <Box>
         <Stack spacing={25} direction='row' justifyContent="center" alignItems="center">
 
-          <Item elevation={0}>
+          <Item elevation={0} sx={{ height: 400}}>
             <Link to="/prices">
               <CustomIconButton size="large">
                 <LocalOfferIcon sx={{ fontSize: 100, color: 'white' }}/>
               </CustomIconButton> 
             </Link>
             <h2>{t('Options.Prices')}</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+            <p>{t('HomeButtonsDescription.prices')}</p>
           </Item>
 
-          <Item elevation={0}>
+          <Item elevation={0} sx={{ height: 400}}>
             <Link to="/account">
               <CustomIconButton size="large">
                 <AccountCircleIcon sx={{ fontSize: 100, color: 'white' }}/>
               </CustomIconButton> 
             </Link>
             <h2>{t('Options.Account')}</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+            <p>{t('HomeButtonsDescription.account')}</p>
           </Item>
 
-          <Item elevation={0}>
+          <Item elevation={0} sx={{ height: 400}}>
             <Link to="/configurator">
               <CustomIconButton size="large">
                 <SettingsInputComponentIcon sx={{ fontSize: 100, color: 'white' }}/>
@@ -83,7 +83,7 @@ const MainCircleRowLinks = () => {
               </CustomIconButton>
             </Link>
             <h2>{t('Options.Services')}</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+            <p>{t('HomeButtonsDescription.services')}</p>
           </Item>
 
           <Item elevation={0}>
@@ -93,7 +93,7 @@ const MainCircleRowLinks = () => {
               </CustomIconButton>
             </Link>
             <h2>{t('Options.Contributors')}</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+            <p>{t('HomeButtonsDescription.contributors')}</p>
           </Item>
 
         </Stack>

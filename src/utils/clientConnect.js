@@ -90,7 +90,24 @@ export async function getOne(route, errorHandler, headers) {
 }
 
 export async function putOne(route, errorHandler, data, headers) {
+  try {
+    const response = await fetch(route, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': getAccessTokenFromCookie(),
+        ...headers
+      },
+      credentials: 'include',
+      body: data
+    });
 
+    return response;
+  }
+  catch (ex) {
+    errorHandler('Server is unavailable!');
+  }
 }
 
 export async function deleteOne(route, errorHandler, headers) {

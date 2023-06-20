@@ -1,16 +1,18 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-import { postOne, getJsonResponse } from './../utils/clientConnect';
+import { postOne, getJsonResponse, getOne } from './../utils/clientConnect';
 
 const loginApiRoute = 'gateway/sign-in';
 const signInApiRoute = 'gateway/sign-up';
+const getUserByIdRoute = 'gateway/user/'
 
 const returnUrl = 'http://localhost/home';
 
 export async function signIn(username, password, rememberLogin, handleErrorMessageChange) {
 
+  logout(handleErrorMessageChange);
+  localStorage.removeItem('successMessage');
+  
   if (!username || !password)
   {
     handleErrorMessageChange('Validation error!');
@@ -29,7 +31,7 @@ export async function signIn(username, password, rememberLogin, handleErrorMessa
   if (responseJson && responseBody.ok) {
     setUserToCookie(responseJson);
     localStorage.setItem('successMessage', 'Вы успешно вошли!');
-    CheckAndRedirect();
+    return 'Вы успешно вошли!'
   }
   return null;
 }
@@ -60,6 +62,7 @@ export async function signUp(fullName, username, email, password, handleErrorMes
   return null;
 }
 
+
 export function CheckAndRedirect() {
   window.location.reload();
 }
@@ -75,15 +78,26 @@ export async function logout(handleErrorMessageChange) {
     Cookies.remove('userId');
     Cookies.remove('userName');
     Cookies.remove('fullName');
+    Cookies.remove('email');
     Cookies.remove('roles');
 
     localStorage.setItem('successMessage', 'Вы успешно вышли!');
-    CheckAndRedirect();
     return null;
   }
   catch (ex) {
     console.log("Error");
   }
+}
+
+export async function getUserById(userId, errorHandler) {
+  var responseBody = await getOne(getUserByIdRoute + userId, errorHandler, null);
+  var responseJson = await getJsonResponse(responseBody, errorHandler);
+
+  if (responseJson && responseBody.ok) {
+    return responseJson;
+  };
+
+  return null;
 }
 
 export function setUserToCookie(responseJson) {
@@ -97,6 +111,7 @@ export function setUserToCookie(responseJson) {
     Cookies.set('userId', responseJson.userId);
     Cookies.set('userName', responseJson.userName);
     Cookies.set('fullName', responseJson.fullName);
+    Cookies.set('email', responseJson.email);
     Cookies.set('roles', responseJson.roles);
   }
   catch (ex) {
@@ -116,11 +131,12 @@ export function getUserFromCookie() {
     const userId = Cookies.get('userId');
     const userName = Cookies.get('userName');
     const fullName = Cookies.get('fullName');
+    const email = Cookies.get('email');
     const roles = Cookies.get('roles');
   
     return {
       accessToken, expiresIn, tokenType, scope, tokenIssuedAt,
-      userId, userName, fullName, roles
+      userId, userName, fullName, email, roles
     }
   }
   catch (ex) {
