@@ -1,0 +1,15 @@
+.text-field-label {
+  font-weight: bold;
+  text-align: left;
+}
+
+#password_block_check {
+  height: 5px;
+  margin-top: 5px;
+  transition: 1s;
+  border-radius: 10px;
+}
+
+p {
+  margin: 0;
+}
