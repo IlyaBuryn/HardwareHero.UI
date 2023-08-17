@@ -5,7 +5,7 @@ const getComponentByIdRoute = 'gateway/aggregator/component/';
 const getPageCountRoute = 'gateway/aggregator/components/pageCount';
 
 export async function getComponentsAsPageByFilter(handleError, pageNumber, pageSize, filter, searchString) {
-  
+
   if (!filter) {
     filter = '{}';
   }
@@ -35,6 +35,9 @@ export async function getComponentsAsPageByFilter(handleError, pageNumber, pageS
 
 export async function getPageCount(handleError, pageSize, filter, searchString) {
   
+  if (false) {
+    return 1;
+  }
     if (!filter) {
     filter = '{}';
   }
@@ -63,6 +66,7 @@ export async function getPageCount(handleError, pageSize, filter, searchString) 
 }
 
 export async function getComponentById(errorHandler, id) {
+  
   var responseBody = await getOne(getComponentByIdRoute + id, errorHandler, null);
 
   var responseJson = await getJsonResponse(responseBody, errorHandler);

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { AppBar, Box, Button, Container, Stack, Toolbar, Typography } from '@mui/material';
+import { AppBar, Badge, Box, Button, Container, Stack, Toolbar, Typography } from '@mui/material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import './Header.css';
 import logo from './../../../images/tmplogo.png';
 
@@ -109,8 +110,14 @@ const Header = () => {
               <Link to="/home">
                 <img className='logo-center' src={logo} alt='logo' />
               </Link>
+              <p></p>
 
               <Stack spacing={2} direction='row' sx={{ marginRight: 'auto' }}>
+
+                <Badge badgeContent={0} sx={{ mt: 1, mr: 1}} color="secondary" showZero max={99}>
+                  <FavoriteIcon color="white" />
+                </Badge>
+
                 {userSession ? (
                   <>
                     <Stack direction="column">

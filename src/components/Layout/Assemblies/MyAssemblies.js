@@ -51,7 +51,7 @@ const MyAssemblies = ({ assemblies, errorHandler }) => {
                       variant="rounded"
                       sx={{ width: 96, height: 96, mr: 2 }}
                     />
-                  <ListItemText sx={{ width: 150 }} primary={item.name} secondary={item.initialPrice} />
+                  <ListItemText sx={{ width: 150 }} primary={item.name} secondary={item.initialPrice + ' BYN'} />
                 </Box>
               )) : null}
             </Stack>       

@@ -257,7 +257,7 @@ function AggregatorItems() {
                 <Stack sx={{ m: 2 }} direction="row" alignItems="center">
                   <Stack spacing={3} direction="column" alignItems="center">
                     <Typography variant="h6" component="div">
-                      ~{item.initialPrice}
+                      ~{item.initialPrice} BYN
                     </Typography>
 
                     <IconButton
@@ -305,7 +305,7 @@ function AggregatorItems() {
                         В магазине: {item.name}
                       </Typography>
                       <Typography variant="body2" component="div">
-                        Цена в магазине: {item.quantity}
+                        Цена в магазине: {item.quantity} BYN
                       </Typography>
 
                       <CanvasGraph prices={item.prices} />
