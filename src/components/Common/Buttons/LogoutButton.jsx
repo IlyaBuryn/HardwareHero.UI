@@ -2,8 +2,8 @@ import React from 'react';
 import { Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-import { logout } from '../../../services/userManager.js';
-import { useErrorMessage, ErrorSnackbar } from '../Snackbar/ErrorSnackbar.js';
+import { logout } from '../../../services/userManager';
+import { useErrorMessage, ErrorSnackbar } from '../Snackbar/ErrorSnackbar';
 
 export default function LogoutButton() {
 

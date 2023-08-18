@@ -1,14 +1,14 @@
-FROM node:20-alpine 
+FROM node:20-slim
 
 # WORKDIR /usr/src/app
 WORKDIR /app
 
 COPY ./package.json .
 COPY ./package-lock.json .
-RUN npm install --legacy-peer-deps
+RUN npm install
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE 5173
 
-CMD ["npm", "run", "start-watch"]
+CMD ["npm", "run", "dev-exposed"]

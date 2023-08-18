@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { themeColors } from './../../../utils/colors.js';
-import Header from './../../Layout/Header/Header.js'
-import Footer from './../../Layout/Footer/Footer.js'
-import HomeMain from './../../Layout/Home/HomeMain.js'
 
+import { themeColors } from '../../../utils/colors';
+
+import Header from '../../Layout/Header/Header'
+import Footer from '../../Layout/Footer/Footer'
+import AggregatorItems from '../../Layout/Aggregator/AggregatorItems';
 
 const theme = createTheme({
   palette: {
@@ -19,13 +20,13 @@ const theme = createTheme({
 });
 
 
-export default function Home() {
+export default function Aggregator() {
   return (
     <ThemeProvider theme={theme}>
 
         <Header />
         
-        <HomeMain />
+        <AggregatorItems />
 
         <Footer />
 

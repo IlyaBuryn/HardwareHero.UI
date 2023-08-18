@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, IconButton, styled, Stack, Divider, Paper } from '@mui/material';
-import { themeColors } from './../../../utils/colors.js';
+import { themeColors } from '../../../utils/colors';
 import './MainCircleRowLinks.css';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';

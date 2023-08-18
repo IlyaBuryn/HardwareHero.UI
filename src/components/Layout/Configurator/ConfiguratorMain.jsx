@@ -21,7 +21,7 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-import { getComponentTypes } from './../../../services/configuratorManager';
+import { getComponentTypes } from '../../../services/configuratorManager';
 import { ErrorSnackbar, useErrorMessage } from '../../Common/Snackbar/ErrorSnackbar';
 import { SuccessSnackbar, useSuccessMessage } from '../../Common/Snackbar/SuccessSnackbar';
 

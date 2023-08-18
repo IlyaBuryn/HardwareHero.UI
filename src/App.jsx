@@ -1,5 +1,3 @@
-import React, { useState, useEffect } from 'react';
-import Home from './components/Pages/Home/Home';
 import { Routes, Route, Navigate } from "react-router-dom"
 import Callback from './components/Common/Callback/Callback';
 import Configurator from './components/Pages/Configurator/Configurator';
@@ -8,7 +6,8 @@ import Aggregator from './components/Pages/Aggregator/Aggregator';
 import Contributor from './components/Pages/Contributor/Contributor';
 import ContributorRequestsPage from './components/Pages/Contributor/ContributorRequestsPage';
 import AggregatorOneElement from './components/Layout/Aggregator/AggregatorOneElement';
-
+import Home from './components/Pages/Home/Home';
+import './App.css'
 
 function App() {
   return (
@@ -28,5 +27,4 @@ function App() {
   );
 }
 
-
-export default App;
+export default App

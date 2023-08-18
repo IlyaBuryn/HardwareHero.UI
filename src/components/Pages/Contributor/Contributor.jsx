@@ -3,18 +3,18 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 
 
-import { themeColors } from './../../../utils/colors.js';
+import { themeColors } from '../../../utils/colors';
 
 
-import Header from './../../Layout/Header/Header.js'
-import Footer from './../../Layout/Footer/Footer.js'
+import Header from '../../Layout/Header/Header'
+import Footer from '../../Layout/Footer/Footer'
 
 
-import { checkUserRole, getUserFromCookie, getUserRole, isSessionUser } from '../../../services/userManager.js';
-import SignUpDialog from '../../Common/Dialog/SignUpDialog.js';
-import LogInDialog from '../../Common/Dialog/LogInDialog.js';
-import ContributorSignUp from '../../Layout/Contributor/ContributorSignUp.js';
-import ContributorMenu from '../../Layout/Contributor/ContributorMenu.js';
+import { checkUserRole, getUserFromCookie, getUserRole, isSessionUser } from '../../../services/userManager';
+import SignUpDialog from '../../Common/Dialog/SignUpDialog';
+import LogInDialog from '../../Common/Dialog/LogInDialog';
+import ContributorSignUp from '../../Layout/Contributor/ContributorSignUp';
+import ContributorMenu from '../../Layout/Contributor/ContributorMenu';
 
 
 const theme = createTheme({

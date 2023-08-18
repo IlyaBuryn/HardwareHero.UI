@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import LogInDialog from '../LogInDialog.js';
+import LogInDialog from '../LogInDialog';
 import { Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
