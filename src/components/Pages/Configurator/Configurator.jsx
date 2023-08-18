@@ -1,11 +1,10 @@
 import React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-import { themeColors } from './../../../utils/colors.js';
-
-import Header from './../../Layout/Header/Header.js'
-import Footer from './../../Layout/Footer/Footer.js'
-import AggregatorItems from '../../Layout/Aggregator/AggregatorItems.js';
+import { themeColors } from '../../../utils/colors';
+import Header from '../../Layout/Header/Header'
+import Footer from '../../Layout/Footer/Footer'
+import ConfiguratorMain from '../../Layout/Configurator/ConfiguratorMain';
+import { useLocation } from 'react-router-dom';
 
 const theme = createTheme({
   palette: {
@@ -20,13 +19,16 @@ const theme = createTheme({
 });
 
 
-export default function Aggregator() {
+export default function Home() {
+  const location = useLocation();
+  const { readyComponents } = location.state ?? [];
+
   return (
     <ThemeProvider theme={theme}>
 
         <Header />
         
-        <AggregatorItems />
+        <ConfiguratorMain readyComponents={readyComponents}/>
 
         <Footer />
 

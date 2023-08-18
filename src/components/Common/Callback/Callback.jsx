@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { UserManager, WebStorageStateStore } from 'oidc-client';
-import clientConfig from './../../../identity/identityClientConfig.js';
+import clientConfig from '../../../identity/identityClientConfig';
 
 const Callback = () => {
   useEffect(() => {

@@ -5,12 +5,12 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import './Header.css';
 import logo from './../../../images/tmplogo.png';
 
-import LogInDialogButton from '../../Common/Dialog/DialogButtons/LogInDialogButton.js';
-import SignUpDialogButton from '../../Common/Dialog/DialogButtons/SignUpDialogButton.js';
+import LogInDialogButton from '../../Common/Dialog/DialogButtons/LogInDialogButton';
+import SignUpDialogButton from '../../Common/Dialog/DialogButtons/SignUpDialogButton';
 import LanguageMenu from '../../Common/Menu/LanguageMenu';
 
-import { getUserFromCookie, isSessionUser, getUserRole, checkUserRole } from './../../../services/userManager.js';
-import ProfileMenu from './../../Common/Menu/ProfileMenu';
+import { getUserFromCookie, isSessionUser, getUserRole, checkUserRole } from '../../../services/userManager';
+import ProfileMenu from '../../Common/Menu/ProfileMenu';
 import { SuccessSnackbar, useSuccessMessage } from '../../Common/Snackbar/SuccessSnackbar';
 import { ErrorSnackbar, useErrorMessage } from '../../Common/Snackbar/ErrorSnackbar';
 import AdminHeader from '../Admin/AdminHeader';

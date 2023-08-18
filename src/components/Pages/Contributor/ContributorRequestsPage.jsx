@@ -1,9 +1,9 @@
 import React from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { themeColors } from './../../../utils/colors.js';
-import Header from './../../Layout/Header/Header.js'
-import Footer from './../../Layout/Footer/Footer.js'
-import ContributorRequests from '../../Layout/Manager/ContributorRequests.js';
+import { themeColors } from '../../../utils/colors';
+import Header from '../../Layout/Header/Header'
+import Footer from '../../Layout/Footer/Footer'
+import ContributorRequests from '../../Layout/Manager/ContributorRequests';
 
 
 const theme = createTheme({
