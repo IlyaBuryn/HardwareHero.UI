@@ -4,11 +4,13 @@ import { TableRow, TableCell,
   Menu, MenuItem,
   ListItemText, ListItemAvatar,
   Typography, InputBase,
-  Avatar, Box, Pagination, Stack, Alert, Checkbox, FormControlLabel  } from "@mui/material";
+  Avatar, Box, Pagination, Stack, Alert, Checkbox, FormControlLabel, Paper, BottomNavigation, BottomNavigationAction  } from "@mui/material";
 import { styled, alpha } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import DeepList from "./DeepList";
 import { getComponentsAsPageByFilter, getPageCount } from "../../../services/aggregatorManager";
@@ -88,6 +90,7 @@ export default function ConfiguratorRow({ item, index, assemblyHandler, errorHan
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(10);
   const [searchValue, setSearchValue] = useState('');
+  const [navigationValue, setNavigationValue] = useState(0);
 
   const handleMenuItemClick = (value) => {
     setSelectedItem(value);
@@ -230,7 +233,7 @@ export default function ConfiguratorRow({ item, index, assemblyHandler, errorHan
                         : selectedItem.description}
                     </Typography>
                   )}
-                  {t("PCValue.price")}: {selectedItem.initialPrice}
+                  {t("PCValue.price")}: {selectedItem.initialPrice} BYN
                 </>
               }
             />
@@ -285,6 +288,7 @@ export default function ConfiguratorRow({ item, index, assemblyHandler, errorHan
               horizontal: 'center',
             }}
             getContentAnchorEl={null}
+            PaperProps={{ sx: { maxHeight: 'calc(100vh - 16px)', overflow: 'inherit'} }}
           >
             <Stack direction='row'>
               <Search>
@@ -343,7 +347,7 @@ export default function ConfiguratorRow({ item, index, assemblyHandler, errorHan
                             {truncatedDescription}
                           </Typography>
                         )}
-                        {t("PCValue.price")}: {specification.initialPrice}
+                        {t("PCValue.price")}: {specification.initialPrice} BYN
                       </>
                     }
                   />
@@ -351,9 +355,22 @@ export default function ConfiguratorRow({ item, index, assemblyHandler, errorHan
                 </MenuItem>
               );
             })}
-            <Stack spacing={2} direction='row' alignItems='center' justifyContent='center'>
-              <Pagination count={pageCount} onChange={handlePageChange} variant="outlined" color="secondary" />
-            </Stack>
+            <Box  sx={{ position: 'relative', marginBottom: -8 }}>
+              <Stack spacing={2} direction='row' alignItems='center' justifyContent='center'>
+                <Pagination count={pageCount} onChange={handlePageChange} variant="outlined" color="secondary" />
+              </Stack>
+
+              <BottomNavigation
+                showLabels
+                value={navigationValue}
+                onChange={(event, newValue) => {
+                  setNavigationValue(newValue);
+                }}
+              >
+                <BottomNavigationAction label="Каталог" icon={<ShoppingBagIcon />} />
+                <BottomNavigationAction label="Список желаемого" icon={<FavoriteIcon />} />
+              </BottomNavigation>
+            </Box>
           </Menu>
         </>
         )}
