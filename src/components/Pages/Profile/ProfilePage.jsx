@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { themeColors } from '../../../utils/colors';
+import { ThemeProvider } from '@mui/material/styles';
+import { standardTheme } from '../../../utils/theme';
 import { Container, Typography, TextField, Button, Stack, Paper, Box, Tooltip, IconButton, Avatar, Grid, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Header from '../../Layout/Header/Header';
@@ -15,18 +15,6 @@ import { useTranslation } from 'react-i18next';
 import MyAssemblies from '../../Layout/Assemblies/MyAssemblies';
 import { getAssembliesByUserId } from '../../../services/assemblyManager';
 import { useErrorMessage, ErrorSnackbar } from '../../Common/Snackbar/ErrorSnackbar';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: themeColors.darkerThanBackColor.color,
-    },
-    secondary: {
-      main: themeColors.darkerThanComponentColor.color,
-      light: themeColors.componentColor.color,
-    },
-  },
-});
 
 const ProfilePage = () => {
   const location = useLocation();
@@ -92,7 +80,7 @@ const ProfilePage = () => {
 
     return (
       <>
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={standardTheme}>
           <Header />
 
           {!error.hidden ? (

@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-
-
-import { themeColors } from '../../../utils/colors';
+import { standardTheme } from '../../../utils/theme';
 
 
 import Header from '../../Layout/Header/Header'
@@ -15,20 +13,6 @@ import SignUpDialog from '../../Common/Dialog/SignUpDialog';
 import LogInDialog from '../../Common/Dialog/LogInDialog';
 import ContributorSignUp from '../../Layout/Contributor/ContributorSignUp';
 import ContributorMenu from '../../Layout/Contributor/ContributorMenu';
-
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: themeColors.darkerThanBackColor.color,
-    },
-    secondary: {
-      main: themeColors.darkerThanComponentColor.color,
-      light: themeColors.componentColor.color,
-    },   
-  }
-});
-
 
 export default function Contributor() {
   const [isLoginOpen, setIsLoginOpen] = useState(true);
@@ -49,7 +33,7 @@ export default function Contributor() {
 
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={standardTheme}>
 
         <Header />
         
