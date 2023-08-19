@@ -2,14 +2,20 @@ import React, { useState } from 'react';
 import { Accordion, AccordionSummary, AccordionDetails, Button, Typography, Stack, Avatar, ListItemText, Box } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { getComponentById } from '../../../services/aggregatorManager';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useSnackbarQueue } from '../../Common/Snackbar/SnackbarQueue';
 
 const baseImageUrl = 'http://localhost/images/';
 
-const MyAssemblies = ({ assemblies, errorHandler }) => {
-  const [expanded, setExpanded] = React.useState(false);
+const MyAssemblies = ({ assemblies }) => {
+  const [expanded, setExpanded] = useState(false);
   const [components, setComponents] = useState([]);
   const navigate = useNavigate();
+  const enqueueSnackbar = useSnackbarQueue();
+
+  const errorHandler = (str) => {
+    console.log(str);
+  }
 
   const handleChange = (panel) => (event, isExpanded,) => {
     setExpanded(isExpanded ? panel : false);
@@ -26,7 +32,7 @@ const MyAssemblies = ({ assemblies, errorHandler }) => {
         const componentsValue = await Promise.all(promises);
         setComponents(componentsValue);
       } catch (error) {
-        errorHandler('Response error!');
+        enqueueSnackbar('Response error!', 'error');
       }
     }
   }

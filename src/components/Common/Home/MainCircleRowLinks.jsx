@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, IconButton, styled, Stack, Divider, Paper } from '@mui/material';
-import { themeColors } from '../../../utils/colors';
+import { useTranslation } from 'react-i18next';
 import './MainCircleRowLinks.css';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -9,8 +9,10 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import SettingsInputComponentIcon from '@mui/icons-material/SettingsInputComponent';
+import { isSessionUser } from '../../../services/userManager';
+import { themeColors } from '../../../utils/colors';
+import { useSnackbarQueue } from '../Snackbar/SnackbarQueue';
 
-import { useTranslation } from 'react-i18next';
 
 const CustomIconButton = styled(IconButton)(({ theme }) => ({
   backgroundColor: themeColors.darkerThanBackColor.color,
@@ -29,9 +31,15 @@ const Item = styled(Paper)(({ theme }) => ({
   margin: 20
 }));
 
-const MainCircleRowLinks = () => {
+const MainCircleRowLinks = ({ onToggleSignIn }) => {
+
+  const signInSwitch = () => {
+    enqueueSnackbar('Для того, чтобы стать участником проекта вы должны войти в свой аккаунт!', 'warning')
+    onToggleSignIn();
+  }
 
   const { t, i18n } = useTranslation();
+  const enqueueSnackbar = useSnackbarQueue();
 
   return (
     <>
@@ -48,15 +56,24 @@ const MainCircleRowLinks = () => {
             <p>{t('HomeButtonsDescription.prices')}</p>
           </Item>
 
-          <Item elevation={0} sx={{ height: 400}}>
-            <Link to="/account">
-              <CustomIconButton size="large">
-                <AccountCircleIcon sx={{ fontSize: 100, color: 'white' }}/>
-              </CustomIconButton> 
-            </Link>
+          <Item elevation={0} sx={{ height: 400 }}>
+            {isSessionUser() ? (
+              <Link to="/account">
+                <CustomIconButton size="large">
+                  <AccountCircleIcon sx={{ fontSize: 100, color: 'white' }}/>
+                </CustomIconButton> 
+              </Link>
+            ) : (
+              <div>
+                <CustomIconButton size="large" onClick={() => enqueueSnackbar('(401) Вы не вошли в аккаунт', 'error')}>
+                  <AccountCircleIcon sx={{ fontSize: 100, color: 'white' }}/>
+                </CustomIconButton> 
+              </div>
+            )}
             <h2>{t('Options.Account')}</h2>
             <p>{t('HomeButtonsDescription.account')}</p>
           </Item>
+
 
           <Item elevation={0} sx={{ height: 400}}>
             <Link to="/configurator">
@@ -87,15 +104,22 @@ const MainCircleRowLinks = () => {
           </Item>
 
           <Item elevation={0}>
-            <Link to="/contributor">
-              <CustomIconButton size="large">
-                <HandshakeIcon sx={{ fontSize: 100, color: 'white' }}/>
-              </CustomIconButton>
-            </Link>
+            {isSessionUser() ? (
+              <Link to="/contributor">
+                <CustomIconButton size="large">
+                  <HandshakeIcon sx={{ fontSize: 100, color: 'white' }}/>
+                </CustomIconButton> 
+              </Link>
+            ) : (
+              <div>
+                <CustomIconButton size="large" onClick={signInSwitch}>
+                  <HandshakeIcon sx={{ fontSize: 100, color: 'white' }}/>
+                </CustomIconButton> 
+              </div>
+            )}
             <h2>{t('Options.Contributors')}</h2>
             <p>{t('HomeButtonsDescription.contributors')}</p>
           </Item>
-
         </Stack>
       </Box>
     </>

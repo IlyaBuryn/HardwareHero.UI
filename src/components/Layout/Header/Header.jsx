@@ -16,7 +16,7 @@ import { ErrorSnackbar, useErrorMessage } from '../../Common/Snackbar/ErrorSnack
 import AdminHeader from '../Admin/AdminHeader';
 import ManagerHeader from '../Manager/ManagerHeader';
 
-const Header = () => {
+const Header = ({ isSignIn }) => {
 
   const [userSession, setUserSession] = useState(false);
   const location = useLocation();
@@ -39,6 +39,7 @@ const Header = () => {
   };
 
   useEffect(() => {
+    setIsLoginOpen(isSignIn);
     setUserSession(isSessionUser());
   }, []);
 
@@ -104,7 +105,9 @@ const Header = () => {
           <Container fixed>
             <Toolbar>
               <LanguageMenu />
-
+              <Badge badgeContent={0} sx={{ mt: 1, mr: 1}} color="secondary" showZero max={99}>
+                  <FavoriteIcon color="white" />
+                </Badge>
               <Typography variant='h6' sx={{ flexGrow: 1 }}></Typography>
 
               <Link to="/home">
@@ -113,10 +116,6 @@ const Header = () => {
               <p></p>
 
               <Stack spacing={2} direction='row' sx={{ marginRight: 'auto' }}>
-
-                <Badge badgeContent={0} sx={{ mt: 1, mr: 1}} color="secondary" showZero max={99}>
-                  <FavoriteIcon color="white" />
-                </Badge>
 
                 {userSession ? (
                   <>

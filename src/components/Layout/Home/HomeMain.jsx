@@ -5,7 +5,7 @@ import MainCircleRowLinks from '../../Common/Home/MainCircleRowLinks';
 
 import { useTranslation } from 'react-i18next';
 
-const HomeMain = () => {
+const HomeMain = ({ onToggleSignIn }) => {
 
   const { t, i18n } = useTranslation();
 
@@ -59,7 +59,7 @@ const HomeMain = () => {
       </Container>
     </Paper>
 
-    <MainCircleRowLinks />
+    <MainCircleRowLinks onToggleSignIn={onToggleSignIn}/>
     
   </main>
   );
