@@ -3,9 +3,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import LanguageIcon from '@mui/icons-material/Language';
-
 import { useTranslation } from 'react-i18next';
-
 
 const options = [
   { label: 'Русский', prefix: 'ru' },
@@ -16,7 +14,7 @@ const ITEM_HEIGHT = 48;
 
 export default function LanguageMenu() {
 
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedLanguage, setSelectedLanguage] = React.useState('');

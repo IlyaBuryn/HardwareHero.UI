@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Alert, AlertTitle } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useTranslation } from 'react-i18next';
+
 import './SnackbarQueue.css';
 
+
 export const SnackbarQueue = () => {
+  
   const [queue, setQueue] = useState([]);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const remainingMessagesCount = queue.length - 3;
 
   useEffect(() => {
@@ -109,3 +112,12 @@ export const useSnackbarQueue = () => {
 
   return enqueueSnackbar;
 };
+
+export const useSnackbarBeforeReload = () => {
+  const enqueueSnackbarReload = (message, type) => {
+    localStorage.setItem('snackbarMessage', message);
+    localStorage.setItem('snackbarMessageType', type);
+  };
+
+  return enqueueSnackbarReload;
+}

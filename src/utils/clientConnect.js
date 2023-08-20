@@ -11,6 +11,10 @@ function getAccessTokenFromCookie() {
 }
 
 export async function getJsonResponse(response, errorHandler) {
+  if (!errorHandler) {
+    errorHandler = (str) => {console.log("tmp `getJsonResponse`: " + str)}
+  }
+
   try {
     const responsejson = await response.json();
 
@@ -27,9 +31,12 @@ export async function getJsonResponse(response, errorHandler) {
 }
 
 export async function postOne(route, errorHandler, data, headers) {
+
+  if (!errorHandler) {
+    errorHandler = (str) => {console.log("tmp `postOne`: " + str)}
+  }
+
   try {
-
-
     const response = await fetch(route, {
       method: 'POST',
       headers: {

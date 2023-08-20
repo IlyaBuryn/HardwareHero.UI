@@ -1,0 +1,21 @@
+@keyframes fadeInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+.alert-message {
+  border-radius: 10px;
+  width: 300px;
+  /* z-index: 9999; */
+  margin-bottom: 10px;
+  border: 1px solid;
+  border-color: red;
+  animation: fadeInUp 0.5s ease;
+}

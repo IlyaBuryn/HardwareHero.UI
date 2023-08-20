@@ -8,43 +8,37 @@ const getUserByIdRoute = 'gateway/user/'
 
 const returnUrl = 'http://localhost/home';
 
-export async function signIn(username, password, rememberLogin, handleErrorMessageChange) {
+export async function signIn(username, password, rememberLogin) {
 
-  logout(handleErrorMessageChange);
-  localStorage.removeItem('successMessage');
+  logout();
   
-  if (!username || !password)
-  {
-    handleErrorMessageChange('Validation error!');
-    return;
+  if (!username || !password) {
+    return {'message': 'Validation error!', 'type': 'error'};
   }
 
-  var responseBody = await postOne(loginApiRoute, handleErrorMessageChange, JSON.stringify({
+  var responseBody = await postOne(loginApiRoute, null, JSON.stringify({
     username,
     password,
     returnUrl,
     rememberLogin
   }), null);
 
-  var responseJson = await getJsonResponse(responseBody, handleErrorMessageChange)
+  var responseJson = await getJsonResponse(responseBody, null)
 
   if (responseJson && responseBody.ok) {
     setUserToCookie(responseJson);
-    localStorage.setItem('successMessage', 'Вы успешно вошли!');
-    return 'Вы успешно вошли!'
+    return {'message': 'Вы успешно вошли!', 'type': 'success'};
   }
   return null;
 }
 
-export async function signUp(fullName, username, email, password, handleErrorMessageChange) {
+export async function signUp(fullName, username, email, password) {
 
-  if (!fullName || !username || !email || !password)
-  {
-    handleErrorMessageChange('Validation error!');
-    return;
+  if (!fullName || !username || !email || !password) {
+    return {'message': 'Validation error!', 'type': 'error'};;
   }
 
-  var responseBody = await postOne(signInApiRoute, handleErrorMessageChange, JSON.stringify({
+  var responseBody = await postOne(signInApiRoute, null, JSON.stringify({
     fullName,
     username,
     password,
@@ -52,12 +46,11 @@ export async function signUp(fullName, username, email, password, handleErrorMes
     returnUrl
   }), null);
 
-  var responseJson = await getJsonResponse(responseBody, handleErrorMessageChange)
+  var responseJson = await getJsonResponse(responseBody, null)
 
   if (responseJson && responseBody.ok) {
     setUserToCookie(responseJson);
-    localStorage.setItem('successMessage', 'Вы успешно зарегистрировались!');
-    CheckAndRedirect();
+    return {'message': 'Вы успешно зарегистрировались!', 'type': 'success'};
   }
   return null;
 }
@@ -67,7 +60,7 @@ export function CheckAndRedirect() {
   window.location.reload();
 }
 
-export async function logout(handleErrorMessageChange) {
+export async function logout() {
   try {
     Cookies.remove('accessToken');
     Cookies.remove('expiresIn');
@@ -81,7 +74,6 @@ export async function logout(handleErrorMessageChange) {
     Cookies.remove('email');
     Cookies.remove('roles');
 
-    localStorage.setItem('successMessage', 'Вы успешно вышли!');
     return null;
   }
   catch (ex) {

@@ -3,18 +3,18 @@ import { Alert, Button, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import './UnauthorizedPage.css';
+import './ForbiddenPage.css';
 
 
-const UnauthorizedPage = () => {
+const ForbiddenPage = () => {
 
   const { t, i18n } = useTranslation();
 
   return (
     <div className="center-container">
-      <Alert className="custom-alert" severity="warning" sx={{ borderRadius: '23px'}}>
-        <h1>{t("Unauthorized.Title")}</h1>
-        <p>{t("Unauthorized.Description")}</p>
+      <Alert className="custom-alert" severity="error" sx={{ borderRadius: '23px'}}>
+        <h1>{t("Forbidden.Title")}</h1>
+        <p>{t("Forbidden.Description")}</p>
         <Box className="button-box">
           <Button
             className="custom-button"
@@ -23,7 +23,7 @@ const UnauthorizedPage = () => {
             variant="contained"
             color="primary"
           >
-            {t("Unauthorized.BackToHomePage")}
+            {t("Forbidden.BackToHomePage")}
           </Button>
         </Box>
       </Alert>
@@ -32,4 +32,4 @@ const UnauthorizedPage = () => {
 };
 
 
-export default UnauthorizedPage;
+export default ForbiddenPage;

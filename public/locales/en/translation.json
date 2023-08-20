@@ -40,6 +40,9 @@
   "Loading": {
     "1": "Loading..."
   },
+  "Role": {
+    "1": "Role"
+  },
   "Logout": {
     "1": "logout"
   },
@@ -86,5 +89,15 @@
     "Success": "Success",
     "Warning": "Warning",
     "Info": "Info"
+  },
+  "Unauthorized": {
+    "Title": "Error 401: Unauthorized",
+    "Description": "You must be logged in to access this page.",
+    "BackToHomePage": "Go to home page"
+  },
+  "Forbidden": {
+    "Title": "Error 403: Access denied",
+    "Description": "You do not have permission to access this page.",
+    "BackToHomePage": "Go to home page"
   }
 }

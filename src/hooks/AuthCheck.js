@@ -7,8 +7,13 @@ const useAuthCheck = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isSessionUser()) {
-      navigate('/unauthorized');
+    try {
+      if (!isSessionUser()) {
+        navigate('/unauthorized');
+      }
+    }
+    catch (ex) {
+      navigate('/home?error=' + ex.message)
     }
   }, []);
 

@@ -6,11 +6,14 @@ import Header from '../../Layout/Header/Header'
 import Footer from '../../Layout/Footer/Footer'
 import HomeMain from '../../Layout/Home/HomeMain'
 import SnackbarBlock from '../../Common/Snackbar/SnackbarBlock';
+import useExecuteAfterReload from '../../../hooks/ExecuteAfterReload';
 
 
 const HomePage = () => {
 
   const [isSignInOpen, setIsSignInOpen] = useState(false);
+
+  useExecuteAfterReload();
 
   return (
     <ThemeProvider theme={standardTheme}>

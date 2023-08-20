@@ -1,5 +1,7 @@
 import { createTheme } from '@mui/material/styles';
+
 import { themeColors } from './colors';
+
 
 export const standardTheme = createTheme({
   palette: {
@@ -10,5 +12,14 @@ export const standardTheme = createTheme({
       main: themeColors.darkerThanComponentColor.color,
       light: themeColors.componentColor.color,
     },   
+  }
+});
+
+
+export const lightLinks = createTheme({
+  palette: {
+    primary: {
+      main: themeColors.darkerThanComponentColor.color,
+    }
   }
 });
