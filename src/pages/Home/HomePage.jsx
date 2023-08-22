@@ -4,7 +4,8 @@ import { ThemeProvider } from '@mui/material/styles';
 import { standardTheme } from '../../utils/theme';
 import Header from '../../components/Layout/Header/Header'
 import Footer from '../../components/Layout/Footer/Footer'
-import HomeMain from '../../components/Layout/Home/HomeMain'
+import HomeMainInfo from '../../components/Layout/Home/HomeMainInfo';
+import HomeMainFunctions from '../../components/Layout/Home/HomeMainFunctions';
 
 
 const HomePage = () => {
@@ -14,9 +15,10 @@ const HomePage = () => {
   return (
     <ThemeProvider theme={standardTheme}>
 
-      <Header isSignIn={isSignInOpen}/>
-      <HomeMain onToggleSignIn={() => setIsSignInOpen(!isSignInOpen)}/>
-      <Footer />
+        <Header isSignIn={isSignInOpen}/>
+        <HomeMainInfo />
+        <HomeMainFunctions onToggleSignIn={() => setIsSignInOpen(true)}/>
+        <Footer />
 
     </ThemeProvider>
   );

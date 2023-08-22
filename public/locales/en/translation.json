@@ -99,5 +99,11 @@
     "Title": "Error 403: Access denied",
     "Description": "You do not have permission to access this page.",
     "BackToHomePage": "Go to home page"
+  },
+  "Errors": {
+    "Unauthorized": "You are not logged in to your account!"
+  },
+  "Warnings": {
+    "UnauthorizedToContributorPage": "In order to become a contributor, you must log into your account!"
   }
 }

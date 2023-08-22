@@ -4,7 +4,7 @@ import { Avatar, Box, Button, Container, FormControl, Grid, IconButton, InputLab
 import { useTranslation } from 'react-i18next';
 
 import { getUserFromCookie } from '../../../services/userManager';
-import LogoutButton from '../../Common/Buttons/LogoutButton';
+import LogoutButton from '../../Common/Buttons/LogoutButton/LogoutButton';
 
 
 const UserInfoContainer = ({ onToggleList }) => {
