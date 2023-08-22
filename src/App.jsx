@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom"
+import { ThemeProvider } from "@mui/material";
 
 import ConfiguratorPage from './pages/Configurator/ConfiguratorPage';
 import ProfilePage from './pages/Profile/ProfilePage';
@@ -10,12 +11,11 @@ import HomePage from './pages/Home/HomePage';
 import TestPage from './pages/TestPage/TestPage';
 import UnauthorizedPage from "./pages/Error/UnauthorizedPage";
 import ForbiddenPage from "./pages/Error/ForbiddenPage";
-import './App.css'
 import SnackbarBlock from "./components/Common/Snackbar/SnackbarBlock";
 import useExecuteAfterReload from "./hooks/ExecuteAfterReload";
 import { AuthDialogProvider } from "./components/Common/Dialog/AuthDialogContext";
-import { ThemeProvider } from "@mui/material";
 import { standardTheme } from "./utils/theme";
+import './App.css'
 
 
 function App() {

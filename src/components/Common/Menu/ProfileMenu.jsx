@@ -1,26 +1,18 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { Box, Avatar, Menu, MenuItem, ListItemIcon, Divider, IconButton, Typography, Tooltip, Stack } from '@mui/material'
-
-import PersonAdd from '@mui/icons-material/PersonAdd';
-import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
-
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { useErrorMessage, ErrorSnackbar } from '../Snackbar/ErrorSnackbar';
-import { logout } from '../../../services/userManager';
+import { handleLogout } from '../../../helpers/authHelper';
 
-export default function AccountMenu({ user }) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+const AccountMenu = ({ user }) => {
+
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [error, handleErrorMessageChange, clearErrorMessage] = useErrorMessage();  
-
-  const handleLogoutClick = () => {
-    logout(handleErrorMessageChange)
-    window.location.reload();
-  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -97,14 +89,16 @@ export default function AccountMenu({ user }) {
 
         <Divider />
 
-        <MenuItem onClick={handleLogoutClick}>
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
           {t('Logout.1')}
         </MenuItem>
-
       </Menu>
     </React.Fragment>
   );
 }
+
+
+export default AccountMenu;
