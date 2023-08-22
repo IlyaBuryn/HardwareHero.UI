@@ -13,6 +13,7 @@ import ForbiddenPage from "./pages/Error/ForbiddenPage";
 import './App.css'
 import SnackbarBlock from "./components/Common/Snackbar/SnackbarBlock";
 import useExecuteAfterReload from "./hooks/ExecuteAfterReload";
+import { AuthDialogProvider } from "./components/Common/Dialog/AuthDialogContext";
 
 
 function App() {
@@ -21,24 +22,26 @@ function App() {
 
   return (
     <>
-      <Routes>
+      <AuthDialogProvider >
+        <Routes>
 
-        <Route path="/" element={ <Navigate to="/home" /> } />
-        <Route path="/tests" element={ <TestPage /> } />
-        <Route path="/home" element={ <HomePage /> } />
-        <Route path="/configurator" element={ <ConfiguratorPage /> } />
-        <Route path="/account" element={ <ProfilePage /> } />
-        <Route path="/prices" element={ <AggregatorPage /> } />
-        <Route path="/contributor" element={ <ContributorPage /> } />
-        <Route path='/contributor-requests' element={ <ContributorRequestsPage /> } />
-        <Route path="/prices/:componentId" element={ <AggregatorOneElement /> } />
+          <Route path="/" element={ <Navigate to="/home" /> } />
+          <Route path="/tests" element={ <TestPage /> } />
+          <Route path="/home" element={ <HomePage /> } />
+          <Route path="/configurator" element={ <ConfiguratorPage /> } />
+          <Route path="/account" element={ <ProfilePage /> } />
+          <Route path="/prices" element={ <AggregatorPage /> } />
+          <Route path="/contributor" element={ <ContributorPage /> } />
+          <Route path='/contributor-requests' element={ <ContributorRequestsPage /> } />
+          <Route path="/prices/:componentId" element={ <AggregatorOneElement /> } />
 
-        <Route path="/unauthorized" element={ <UnauthorizedPage /> } />
-        <Route path="/forbidden" element={ <ForbiddenPage /> } />
+          <Route path="/unauthorized" element={ <UnauthorizedPage /> } />
+          <Route path="/forbidden" element={ <ForbiddenPage /> } />
 
-      </Routes>
+        </Routes>
 
-      <SnackbarBlock />
+        <SnackbarBlock />
+      </AuthDialogProvider>
     </>
   );
 }

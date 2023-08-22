@@ -16,9 +16,10 @@ import AlertBlock from '../Alert/AlertBlock';
 import { useAlert } from '../Alert/Alert';
 import { useSnackbarBeforeReload } from '../Snackbar/SnackbarQueue';
 import { lightLinks } from '../../../utils/theme';
+import { useAuthDialog } from './AuthDialogContext';
 
 
-const LogInDialog = ({ isOpen, onSwitch, onClose}) => {
+const LogInDialog = () => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -29,6 +30,7 @@ const LogInDialog = ({ isOpen, onSwitch, onClose}) => {
   const { t } = useTranslation();
   const addAlert = useAlert();
   const enqueueSnackbarReload = useSnackbarBeforeReload();
+  const { isSignInModalOpen, setIsSignInModalOpen, isSignUpModalOpen, setIsSignUpModalOpen } = useAuthDialog();
 
   const processLogin = async () => {
     setIsLoading(true);
@@ -44,14 +46,24 @@ const LogInDialog = ({ isOpen, onSwitch, onClose}) => {
     }
   };
 
+  const handleSwitchDialog = () => {
+    setIsSignInModalOpen(!isSignInModalOpen);
+    setIsSignUpModalOpen(!isSignUpModalOpen);
+  }
+
+  const handleCloseDialog = () => {
+    setIsSignInModalOpen(false)
+  }
+  
+
   return (
-    <Dialog onClose={onClose} open={isOpen}>
+    <Dialog onClose={handleCloseDialog} open={isSignInModalOpen}>
       <DialogTitle sx={{ m: 1, p: 2 }}>{t('LogIn.2')}
-        {onClose && (
+        {handleCloseDialog && (
           <IconButton
             aria-label="close"
             variant="outlined"
-            onClick={onClose}
+            onClick={handleCloseDialog}
             sx={{
               border: '1px solid',
               borderColor: 'currentColor',
@@ -117,7 +129,7 @@ const LogInDialog = ({ isOpen, onSwitch, onClose}) => {
               </Grid>
               <Grid item xs={2} textAlign='center'>
                 <p>{t('HaveAccount.0')}</p>
-                <Link onClick={onSwitch} sx={{ fontWeight: 'bold' }} underline="hover">{t('SignUp.2')}</Link>
+                <Link onClick={handleSwitchDialog} sx={{ fontWeight: 'bold' }} underline="hover">{t('SignUp.2')}</Link>
               </Grid>
             </ThemeProvider>
           </Grid>

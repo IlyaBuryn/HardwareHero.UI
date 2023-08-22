@@ -20,7 +20,7 @@ const ContributorSignUp = () => {
   const [isUserContributorDenied, setIsUserContributorDenied] = useState(false)
   const [contributorId, setContributorId] = useState('');
   const [paperHeight, setPaperHeight] = useState(0);
-  const [isLoadingScreen, setIsLoadingScreen] = useState(false);
+  const [isLoadingScreen, setIsLoadingScreen] = useState(true);
 
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -81,34 +81,35 @@ const ContributorSignUp = () => {
   const placeholderHandler = (str) => { }
 
 
-  useState(async () => {
-    setIsLoadingScreen(true);
-    if (isSessionUser()) {
-      const contributorRequest = await getContributorByUserId(placeholderHandler, getUserFromCookie().userId)
-      // if (contributorRequest) {
-      //   setContributorId(contributorRequest.id);
-      // }
-
-      if (contributorRequest === null) {
-        setIsUserAlreadyStartContributor(false);
-        setIsUserContributorDenied(false);
+  useEffect(() => {
+    const initializeComponent = async () => {
+      setIsLoadingScreen(true);
+      if (isSessionUser()) {
+        const contributorRequest = await getContributorByUserId(placeholderHandler, getUserFromCookie().userId);
+  
+        if (contributorRequest === null) {
+          setIsUserAlreadyStartContributor(false);
+          setIsUserContributorDenied(false);
+        }
+        else if (contributorRequest.isConfirmed === null) {
+          setIsUserAlreadyStartContributor(true);
+          setIsUserContributorDenied(false);
+        }
+        else if (contributorRequest.isConfirmed === false) {
+          setIsUserAlreadyStartContributor(false);
+          setIsUserContributorDenied(true);
+          setContributorId(contributorRequest.id);
+        }
+        else {
+          setIsUserAlreadyStartContributor(false);
+          setIsUserContributorDenied(false);
+        }
       }
-      else if (contributorRequest.isConfirmed === null) {
-        setIsUserAlreadyStartContributor(true);
-        setIsUserContributorDenied(false);
-      }
-      else if (contributorRequest.isConfirmed === false) {
-        setIsUserAlreadyStartContributor(false);
-        setIsUserContributorDenied(true);
-        setContributorId(contributorRequest.id);
-      }
-      else {
-        setIsUserAlreadyStartContributor(false);
-        setIsUserContributorDenied(false);
-      }
-    }
-    setIsLoadingScreen(false);
-  }, [])
+      setIsLoadingScreen(false);
+    };
+  
+    initializeComponent();
+  }, []);
 
 
   if (isLoadingScreen) {
