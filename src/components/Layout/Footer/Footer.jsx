@@ -3,7 +3,7 @@ import { createTheme, ThemeProvider  } from '@mui/material/styles';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GoogleIcon from '@mui/icons-material/Google';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import logo from './../../../../public/tmplogo.png';
+import logo from './../../../assets/tmplogo.png';
 import './Footer.css'
 
 import { useTranslation } from 'react-i18next';
