@@ -8,10 +8,17 @@
 .custom-alert {
   width: auto;
   margin: 0 auto;
-  border: 1px solid orange;
   text-align: center;
   padding: 16px;
   padding-right: 30px;
+}
+
+#error-alert {
+  border: 1px solid red;
+}
+
+#warning-alert {
+  border: 1px solid orange;
 }
 
 .button-box {

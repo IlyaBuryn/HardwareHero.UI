@@ -3,7 +3,7 @@ import { Alert, Button, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import './UnauthorizedPage.css';
+import './ErrorPage.css';
 
 
 const UnauthorizedPage = () => {
@@ -12,7 +12,7 @@ const UnauthorizedPage = () => {
 
   return (
     <div className="center-container">
-      <Alert className="custom-alert" severity="warning" sx={{ borderRadius: '23px'}}>
+      <Alert className="custom-alert" id="warning-alert" severity="warning" sx={{ borderRadius: '23px'}}>
         <h1>{t("Unauthorized.Title")}</h1>
         <p>{t("Unauthorized.Description")}</p>
         <Box className="button-box">

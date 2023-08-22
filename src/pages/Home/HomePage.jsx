@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 
-import { standardTheme } from '../../../utils/theme';
-import Header from '../../Layout/Header/Header'
-import Footer from '../../Layout/Footer/Footer'
-import HomeMain from '../../Layout/Home/HomeMain'
-import SnackbarBlock from '../../Common/Snackbar/SnackbarBlock';
-import useExecuteAfterReload from '../../../hooks/ExecuteAfterReload';
+import { standardTheme } from '../../utils/theme';
+import Header from '../../components/Layout/Header/Header'
+import Footer from '../../components/Layout/Footer/Footer'
+import HomeMain from '../../components/Layout/Home/HomeMain'
+import SnackbarBlock from '../../components/Common/Snackbar/SnackbarBlock';
+import useExecuteAfterReload from '../../hooks/ExecuteAfterReload';
 
 
 const HomePage = () => {

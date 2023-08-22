@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 
-import logo from './../../../images/tmplogo.png';
+import logo from './../../../../public/tmplogo.png';
 import './Header.css';
 
 

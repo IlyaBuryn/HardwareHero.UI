@@ -2,10 +2,10 @@ import React from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import { Button } from '@mui/material';
 
-import { standardTheme } from '../../../utils/theme';
-import Header from '../../Layout/Header/Header'
-import { useSnackbarQueue } from '../../Common/Snackbar/SnackbarQueue';
-import SnackbarBlock from '../../Common/Snackbar/SnackbarBlock';
+import { standardTheme } from '../../utils/theme';
+import Header from '../../components/Layout/Header/Header';
+import { useSnackbarQueue } from '../../components/Common/Snackbar/SnackbarQueue';
+import SnackbarBlock from '../../components/Common/Snackbar/SnackbarBlock';
 
 
 export default function TestPage() {

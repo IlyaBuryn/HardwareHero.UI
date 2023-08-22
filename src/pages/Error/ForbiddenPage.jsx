@@ -3,7 +3,7 @@ import { Alert, Button, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-import './ForbiddenPage.css';
+import './ErrorPage.css';
 
 
 const ForbiddenPage = () => {
@@ -12,7 +12,7 @@ const ForbiddenPage = () => {
 
   return (
     <div className="center-container">
-      <Alert className="custom-alert" severity="error" sx={{ borderRadius: '23px'}}>
+      <Alert className="custom-alert" id="error-alert" severity="error" sx={{ borderRadius: '23px'}}>
         <h1>{t("Forbidden.Title")}</h1>
         <p>{t("Forbidden.Description")}</p>
         <Box className="button-box">
