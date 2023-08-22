@@ -11,9 +11,13 @@ import TestPage from './pages/TestPage/TestPage';
 import UnauthorizedPage from "./pages/Error/UnauthorizedPage";
 import ForbiddenPage from "./pages/Error/ForbiddenPage";
 import './App.css'
+import SnackbarBlock from "./components/Common/Snackbar/SnackbarBlock";
+import useExecuteAfterReload from "./hooks/ExecuteAfterReload";
 
 
 function App() {
+
+  useExecuteAfterReload();
 
   return (
     <>
@@ -33,6 +37,8 @@ function App() {
         <Route path="/forbidden" element={ <ForbiddenPage /> } />
 
       </Routes>
+
+      <SnackbarBlock />
     </>
   );
 }

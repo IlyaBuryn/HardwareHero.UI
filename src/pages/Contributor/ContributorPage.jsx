@@ -7,7 +7,6 @@ import Footer from '../../components/Layout/Footer/Footer'
 import { checkUserRole } from '../../services/userManager';
 import ContributorSignUp from '../../components/Layout/Contributor/ContributorSignUp';
 import ContributorMenu from '../../components/Layout/Contributor/ContributorMenu';
-import SnackbarBlock from '../../components/Common/Snackbar/SnackbarBlock';
 import useAuthCheck from '../../hooks/AuthCheck';
 
 
@@ -22,7 +21,6 @@ const ContributorPage = () => {
         <Header />
         {checkUserRole('Contributor') ? <ContributorMenu /> : <ContributorSignUp />}
         <Footer />
-        <SnackbarBlock />
 
     </ThemeProvider>
   );

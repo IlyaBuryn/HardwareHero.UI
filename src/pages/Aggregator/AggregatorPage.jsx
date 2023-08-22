@@ -5,7 +5,6 @@ import { standardTheme } from '../../utils/theme';
 import Header from '../../components/Layout/Header/Header'
 import Footer from '../../components/Layout/Footer/Footer'
 import AggregatorItems from '../../components/Layout/Aggregator/AggregatorItems';
-import SnackbarBlock from '../../components/Common/Snackbar/SnackbarBlock';
 
 
 const AggregatorPage = () => {
@@ -16,7 +15,6 @@ const AggregatorPage = () => {
         <Header />
         <AggregatorItems />
         <Footer />
-        <SnackbarBlock />
 
       </ThemeProvider>
   );

@@ -5,7 +5,6 @@ import { standardTheme } from '../../utils/theme';
 import Header from '../../components/Layout/Header/Header'
 import Footer from '../../components/Layout/Footer/Footer'
 import ContributorRequests from '../../components/Layout/Manager/ContributorRequests';
-import SnackbarBlock from '../../components/Common/Snackbar/SnackbarBlock';
 import useAuthCheck from '../../hooks/AuthCheck';
 import useRoleCheck from '../../hooks/RoleCheck';
 
@@ -24,7 +23,6 @@ const ContributorRequestsPage = () => {
       <Header />
       <ContributorRequests />
       <Footer />
-      <SnackbarBlock />
 
     </ThemeProvider>
   );
