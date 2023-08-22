@@ -6,7 +6,7 @@ export const themeColors = {
       color: '#DA4167',
     },
     darkerThanComponentColor: {
-      color: '#832161',
+      color: '#681A4D',
     },
     darkerThanBackColor: {
       color: '#3D2645',

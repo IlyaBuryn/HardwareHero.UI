@@ -3,8 +3,8 @@ import { Badge, Fab, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 
-import LanguageMenu from '../../Common/Menu/LanguageMenu';
-import { getUserRole, isSessionUser } from '../../../services/userManager';
+import LanguageMenu from '../../../Common/Menu/LanguageMenu';
+import { getUserRole, isSessionUser } from '../../../../services/userManager';
 
 
 function LeftHeaderControls() {
@@ -26,9 +26,9 @@ function LeftHeaderControls() {
       </Badge>
       
       {userRole === 'Admin' || userRole === 'Manager' ? (
-        <Fab size="small" sx={{ ml: 2 }} variant="extended">
+        <Fab size="small" sx={{ ml: 2.5 }} variant="extended">
           <WidgetsIcon sx={{ mr: 1 }} />
-          {userRole} Menu
+          {userRole}
         </Fab>
       ) : null}
 

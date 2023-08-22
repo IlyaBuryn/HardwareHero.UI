@@ -74,10 +74,10 @@ export async function logout() {
     Cookies.remove('email');
     Cookies.remove('roles');
 
-    return null;
+    return {'message': 'Вы успешно вышли!', 'type': 'success'};
   }
   catch (ex) {
-    console.log("Error");
+    return {'message': ex.message, 'type': 'error'};
   }
 }
 

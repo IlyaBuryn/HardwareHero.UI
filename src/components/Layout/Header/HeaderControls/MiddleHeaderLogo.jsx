@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 
-import logo from './../../../assets/tmplogo.png';
-import './Header.css';
+import logo from './../../../../assets/tmplogo.png';
+import './../Header.css';
 
 
 function MiddleHeaderLogo() {

@@ -9,7 +9,7 @@ const AggregatorPage = () => {
 
   return (
     <>
-      <Header />
+      <Header breadcrumbItems={[{ label: 'Home', url: '/' },{ label: 'Aggregator' }]}/>
       <AggregatorItems />
       <Footer />
     </>

@@ -13,7 +13,7 @@ const ConfiguratorPage = () => {
 
   return (
     <>
-      <Header />
+      <Header breadcrumbItems={[{ label: 'Home', url: '/' },{ label: 'Configurator' }]}/>
       <ConfiguratorMain readyComponents={readyComponents}/>
       <Footer />
     </>

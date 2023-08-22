@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-import { getUserFromCookie, getUserRole, isSessionUser } from '../../../services/userManager';
-import ProfileMenu from '../../Common/Menu/ProfileMenu';
-import AuthDialogButtons from '../DialogButtons/AuthDialogButtons';
-import './Header.css';
+import { getUserFromCookie, getUserRole, isSessionUser } from '../../../../services/userManager';
+import ProfileMenu from '../../../Common/Menu/ProfileMenu';
+import AuthDialogButtons from '../../DialogButtons/AuthDialogButtons';
+import './../Header.css';
 
 
 function RightHeaderControls() {

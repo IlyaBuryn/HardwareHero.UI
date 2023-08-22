@@ -8,14 +8,12 @@ import HomeMainFunctions from '../../components/Layout/Home/HomeMainFunctions';
 
 const HomePage = () => {
 
-  const [isSignInOpen, setIsSignInOpen] = useState(false);
-
   return (
     <>
-        <Header isSignIn={isSignInOpen}/>
-        <HomeMainInfo />
-        <HomeMainFunctions onToggleSignIn={() => setIsSignInOpen(true)}/>
-        <Footer />
+      <Header/>
+      <HomeMainInfo />
+      <HomeMainFunctions />
+      <Footer />
     </>
   );
 }

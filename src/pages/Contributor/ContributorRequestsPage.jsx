@@ -17,7 +17,7 @@ const ContributorRequestsPage = () => {
 
   return (
     <>
-      <Header />
+      <Header breadcrumbItems={[{ label: 'Home', url: '/' },{ label: 'Contributor requests' }]}/>
       <ContributorRequests />
       <Footer />
     </>

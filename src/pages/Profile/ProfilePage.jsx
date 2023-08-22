@@ -15,7 +15,7 @@ const ProfilePage = () => {
 
   return (
     <>
-      <Header />
+      <Header breadcrumbItems={[{ label: 'Home', url: '/home' },{ label: 'Account' }]}/>
       <UserInfoContainer onToggleList={() => setIsAssembliesListOpen(!isAssembliesListOpen)}/>
       <UserAssembliesContainer isListOpen={isAssembliesListOpen}/>
       <Footer />

@@ -15,7 +15,7 @@ const ContributorPage = () => {
 
   return (
     <>
-      <Header />
+      <Header breadcrumbItems={[{ label: 'Home', url: '/' },{ label: 'Contributors' }]}/>
       {checkUserRole('Contributor') ? <ContributorMenu /> : <ContributorSignUp />}
       <Footer />
     </>
