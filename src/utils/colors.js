@@ -1,17 +1,11 @@
 export const themeColors = {
-    backColor: {
-      color: '#F0EFF4',
+    primaryMain: {
+      color: '#2D5D7B', // primary main
     },
-    componentColor: {
-      color: '#DA4167',
+    secondaryMain: {
+      color: '#457EAC', // secondary main
     },
-    darkerThanComponentColor: {
-      color: '#681A4D',
-    },
-    darkerThanBackColor: {
-      color: '#3D2645',
-    },
-    blackColor: {
-      color: '#000000',
+    secondaryLight: {
+      color: '#9191E9', // secondary light
     },
   };

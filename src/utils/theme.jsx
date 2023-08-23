@@ -6,11 +6,11 @@ import { themeColors } from './colors';
 export const standardTheme = createTheme({
   palette: {
     primary: {
-      main: themeColors.darkerThanBackColor.color,
+      main: themeColors.primaryMain.color,
     },
     secondary: {
-      main: themeColors.darkerThanComponentColor.color,
-      light: themeColors.componentColor.color,
+      main: themeColors.secondaryMain.color,
+      light: themeColors.secondaryLight.color,
     },   
   }
 });
@@ -19,7 +19,7 @@ export const standardTheme = createTheme({
 export const lightLinks = createTheme({
   palette: {
     primary: {
-      main: themeColors.darkerThanComponentColor.color,
+      main: themeColors.secondaryMain.color,
     }
   }
 });

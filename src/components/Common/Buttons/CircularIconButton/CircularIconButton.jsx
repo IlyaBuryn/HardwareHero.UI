@@ -6,12 +6,12 @@ import { useTranslation } from 'react-i18next';
 import { themeColors } from '../../../../utils/colors';
 
 const CustomIconButton = styled(IconButton)(({ theme }) => ({
-  backgroundColor: themeColors.darkerThanBackColor.color,
+  backgroundColor: themeColors.primaryMain.color,
   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)',
   width: '200px',
   height: '200px',
   '&:hover': {
-    backgroundColor: themeColors.darkerThanComponentColor.color,
+    backgroundColor: themeColors.secondaryMain.color,
     boxShadow: '0 5px 10px rgba(0, 0, 0, 0.5)'
   }
 }));

@@ -34,18 +34,6 @@ function a11yProps(index) {
   };
 }
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: themeColors.darkerThanBackColor.color,
-    },
-    secondary: {
-      main: themeColors.darkerThanComponentColor.color,
-      light: themeColors.componentColor.color,
-    },
-  },
-});
-
 const baseImageUrl = 'http://localhost/images/';
 
 export default function AggregatorOneElement() {
@@ -80,7 +68,6 @@ export default function AggregatorOneElement() {
 
   return (
     <>
-      <ThemeProvider theme={theme}>
         <Header />
 
         {componentData ? (
@@ -162,7 +149,6 @@ export default function AggregatorOneElement() {
           </Box>
         )}
         <Footer />
-      </ThemeProvider>
     </>
   );
 };
