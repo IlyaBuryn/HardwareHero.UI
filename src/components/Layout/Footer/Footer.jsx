@@ -1,3 +1,4 @@
+import React from 'react';
 import { AppBar, Box, Button, Container, Grid, IconButton, Stack, Toolbar, Typography, Divider, Link } from '@mui/material';
 import { createTheme, ThemeProvider  } from '@mui/material/styles';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -64,17 +65,17 @@ const Footer = () => {
                   <Stack spacing={1} direction='row' justifyContent="center" alignItems="center">
 
                     <Link href='https://github.com/IlyaBuryn/HardwareHero'>
-                      <IconButton color='secondary'>
-                        <GitHubIcon sx={{ fontSize: 40 }}/>
+                      <IconButton>
+                        <GitHubIcon sx={{ fontSize: 40, color: 'white' }}/>
                       </IconButton>
                     </Link>
 
-                    <IconButton color='secondary'>
-                      <GoogleIcon sx={{ fontSize: 40 }}/>
+                    <IconButton>
+                      <GoogleIcon sx={{ fontSize: 40, color: 'white' }}/>
                     </IconButton>
 
-                    <IconButton color='secondary'>
-                      <FacebookIcon sx={{ fontSize: 40 }}/>
+                    <IconButton>
+                      <FacebookIcon sx={{ fontSize: 40, color: 'white' }}/>
                     </IconButton>
 
                   </Stack>
@@ -86,7 +87,7 @@ const Footer = () => {
             </Toolbar>
           </Container>
 
-          <Box sx={{ bgcolor: '#832161',
+          <Box sx={{ bgcolor: 'secondary.main',
                 textAlign: 'center',
                 p: 1 }}>
 
