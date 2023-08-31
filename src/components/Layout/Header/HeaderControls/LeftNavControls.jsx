@@ -7,7 +7,7 @@ import LanguageMenu from '../../../Common/Menu/LanguageMenu';
 import { useUserManager } from '../../../../services/userManager';
 
 
-function LeftHeaderControls() {
+function LeftNavControls() {
 
   const [userRole, setUserRole] = useState('')
   const userManager = useUserManager();
@@ -39,4 +39,4 @@ function LeftHeaderControls() {
   )
 }
 
-export default LeftHeaderControls;
+export default LeftNavControls;

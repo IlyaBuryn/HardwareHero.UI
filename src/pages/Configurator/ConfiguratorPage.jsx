@@ -8,6 +8,7 @@ import ConfiguratorMain from '../../components/Layout/Configurator/ConfiguratorM
 
 const ConfiguratorPage = () => {
 
+  // TODO: Use context?
   const location = useLocation();
   const { readyComponents } = location.state ?? [];
 

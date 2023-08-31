@@ -8,7 +8,7 @@ import './ErrorPage.css';
 
 const ForbiddenPage = () => {
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <div className="center-container">

@@ -8,17 +8,17 @@ import AuthDialogButtons from '../../DialogButtons/AuthDialogButtons';
 import './../Header.css';
 
 
-function RightHeaderControls() {
+function RightNavControls() {
 
+  const userManager = useUserManager();
+  const { t } = useTranslation();
   const [userFullName, setUserFullName] = useState('');
   const [userRole, setUserRole] = useState('')
-  const { t } = useTranslation();
-  const userManager = useUserManager();
 
   useEffect(() => {
     if (userManager.isLoggedIn()) {
       setUserFullName(userManager.getUserSessionInfo().responseValue.fullName);
-      setUserRole(userManager.getUserRole().responseValue)
+      setUserRole(userManager.getUserRole())
     }
   }, []);
 
@@ -43,4 +43,4 @@ function RightHeaderControls() {
 }
 
 
-export default RightHeaderControls;
+export default RightNavControls;

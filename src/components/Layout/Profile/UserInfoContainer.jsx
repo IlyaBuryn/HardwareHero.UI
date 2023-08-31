@@ -9,13 +9,9 @@ import LogoutButton from '../../Common/Buttons/LogoutButton/LogoutButton';
 
 const UserInfoContainer = ({ onToggleList }) => {
 
-  const [user, setUser] = useState();
   const { t } = useTranslation();
   const userManager = useUserManager();
-
-  useEffect(() => {
-    setUser(userManager.getUserSessionInfo().responseValue);
-  }, []);
+  const user = userManager.getUserSessionInfo().responseValue;
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',

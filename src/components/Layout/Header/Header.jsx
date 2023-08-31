@@ -2,9 +2,9 @@ import React from 'react';
 import { AppBar, Box, Container, Toolbar } from '@mui/material';
 
 import './Header.css';
-import LeftHeaderControls from './HeaderControls/LeftHeaderControls';
-import MiddleHeaderLogo from './HeaderControls/MiddleHeaderLogo';
-import RightHeaderControls from './HeaderControls/RightHeaderControls';
+import LeftNavControls from './HeaderControls/LeftNavControls';
+import NavLogo from './HeaderControls/NavLogo';
+import RightNavControls from './HeaderControls/RightNavControls';
 import Breadcrumb from './Breadcrumb/Breadcrumb';
 
 
@@ -16,9 +16,9 @@ const Header = ({ breadcrumbItems }) => {
         <Container fixed>
           <Toolbar>
 
-            <LeftHeaderControls />
-            <MiddleHeaderLogo />
-            <RightHeaderControls />
+            <LeftNavControls />
+            <NavLogo />
+            <RightNavControls />
 
           </Toolbar>
         </Container>

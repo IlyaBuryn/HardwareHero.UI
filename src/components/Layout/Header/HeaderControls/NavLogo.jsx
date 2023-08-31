@@ -5,7 +5,7 @@ import logo from './../../../../assets/tmplogo.png';
 import './../Header.css';
 
 
-function MiddleHeaderLogo() {
+function NavLogo() {
 
   return (
     <Link to="/home">
@@ -15,4 +15,4 @@ function MiddleHeaderLogo() {
 }
 
 
-export default MiddleHeaderLogo;
+export default NavLogo;
