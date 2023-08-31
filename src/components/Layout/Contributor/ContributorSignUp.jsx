@@ -61,15 +61,14 @@ const ContributorSignUp = () => {
       handleErrorMessageChange('Некоторые поля не заполнены!')
     }
     else {
-      await userManager.signIn(userName, password, true, handleErrorMessageChange)
-      if (userManager.isLoggedIn()) {
+      const responseMessage = await userManager.signIn(userName, password, true)
+      if (responseMessage.type !== 'success') {
         const file = selectedImage
         const fileExtension = file.name.split('.').pop();
         const fileName = `${companyName}_logo.${fileExtension}`;
   
-        const response = await contributorManager.createContributor(region, companyName, companyUrl, fileName, selectedImage)
-        console.log(response)
-        if (response) {
+        const responseMessage = await contributorManager.createContributor(region, companyName, companyUrl, fileName, selectedImage)
+        if (responseMessage.responseValue) {
           window.location.reload();
         }
       }
@@ -84,7 +83,8 @@ const ContributorSignUp = () => {
     const initializeComponent = async () => {
       setIsLoadingScreen(true);
       if (userManager.isLoggedIn()) {
-        const contributorRequest = await contributorManager.getContributorByUserId(userManager.getUserSessionInfo().userId);
+        const contributorRequest = await contributorManager.getContributorByUserId(
+          userManager.getUserSessionInfo().responseValue.userId).responseValue;
   
         if (contributorRequest === null) {
           setIsUserAlreadyStartContributor(false);

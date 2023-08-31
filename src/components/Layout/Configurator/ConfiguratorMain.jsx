@@ -97,15 +97,11 @@ const ConfiguratorMain = ({ readyComponents }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        clearErrorMessage();
-        handleLoadingChange(true);
-        trySetData(await configuratorManager.getComponentTypes());
-        handleLoadingChange(false);
-      } catch (error) {
-        handleErrorMessageChange(error.message);
-        handleLoadingChange(false);
-      }
+      clearErrorMessage();
+      handleLoadingChange(true);
+      const responseMessage = await configuratorManager.getComponentTypes()
+      trySetData(responseMessage.responseValue);
+      handleLoadingChange(false);
     };
 
     fetchData();
@@ -136,9 +132,9 @@ const ConfiguratorMain = ({ readyComponents }) => {
 
   async function handleDownloadJsonButtonClick() {
     clearErrorMessage()
-    assemblyManager.saveJsonAsembly(assembly.map(transformData))
+    const responseMessage = assemblyManager.saveJsonAsembly(assembly.map(transformData))
     await clearSuccessMessage();
-    await handleSuccessMessageChange('Файл отправлен!')
+    await handleSuccessMessageChange(responseMessage.message)
   }
 
   async function handleSaveButtonClick() {
@@ -165,8 +161,9 @@ const ConfiguratorMain = ({ readyComponents }) => {
 
   async function handleChoiseButtonClick() {
     try {
-      const assembliesCount = await assemblyManager.getAssembliesByUserId(userManager.getUserSessionInfo().userId).length;
-      if (assembliesCount == 0) {
+      const responseMessage = await assemblyManager.getAssembliesByUserId(
+        userManager.getUserSessionInfo().responseValue.userId);
+      if (!responseMessage.responseValue || responseMessage.responseValue.length === 0) {
         await clearErrorMessage();
         await handleErrorMessageChange('У вас нет ни одной сборки!');
       }

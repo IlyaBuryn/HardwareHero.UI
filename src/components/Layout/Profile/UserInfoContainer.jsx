@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { Avatar, Box, Button, Container, FormControl, Grid, IconButton, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -9,9 +9,13 @@ import LogoutButton from '../../Common/Buttons/LogoutButton/LogoutButton';
 
 const UserInfoContainer = ({ onToggleList }) => {
 
+  const [user, setUser] = useState();
   const { t } = useTranslation();
   const userManager = useUserManager();
-  const user = userManager.getUserSessionInfo(); 
+
+  useEffect(() => {
+    setUser(userManager.getUserSessionInfo().responseValue);
+  }, []);
 
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',

@@ -29,7 +29,7 @@ const MyAssemblies = ({ assemblies }) => {
     }
     else {
       try {
-        const promises = ids.map(async id => await aggregatorManager.getComponentById(id));
+        const promises = ids.map(async id => (await aggregatorManager.getComponentById(id)).responseValue);
         const componentsValue = await Promise.all(promises);
         setComponents(componentsValue);
       } catch (error) {

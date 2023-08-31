@@ -1,5 +1,6 @@
 import { useApiRoutes } from "../data/apiRoutes";
 import { useFetch } from "../hooks/useFetch";
+import { ResponseMessage } from "../utils/responseMessage";
 
 export const useAggregatorManager = () => {
 
@@ -28,10 +29,10 @@ export const useAggregatorManager = () => {
       var responseBody = await client.getMany(api.aggregatorRoutes['getManyAsPage'] + pageNumber, null, additionalHeaders);
       var responseJson = await client.getJsonResponse(responseBody)
 
-      return responseJson;
+      return ResponseMessage(null, 'success', responseJson);
     }
     catch (ex) {
-      return {'message': ex.message, 'type': 'error'};
+      return ResponseMessage(ex.message, 'error');
     }
   }
 
@@ -58,10 +59,10 @@ export const useAggregatorManager = () => {
     var responseBody = await client.getMany(api.aggregatorRoutes['getPageCount'], null, additionalHeaders);
     var responseJson = await client.getJsonResponse(responseBody, handleError)
 
-    return responseJson;
+    return ResponseMessage(null, 'success', responseJson);
     }
     catch (ex) {
-      return {'message': ex.message, 'type': 'error'};
+      return ResponseMessage(ex.message, 'error');
     }
   }
 
@@ -70,10 +71,10 @@ export const useAggregatorManager = () => {
       var responseBody = await client.getOne(api.aggregatorRoutes['getOneById'] + componentId, null);
       var responseJson = await client.getJsonResponse(responseBody);
 
-      return responseJson;
+      return ResponseMessage(null, 'success', responseJson);
     }
     catch (ex) {
-      return {'message': ex.message, 'type': 'error'};
+      return ResponseMessage(ex.message, 'error');
     }
   }
 
@@ -84,7 +85,7 @@ export const useAggregatorManager = () => {
     else {
       const items = [];
       ids.forEach(async id => { // TODO: To backend
-        const item = await getComponentById(id);
+        const item = (await getComponentById(id)).responseValue;
         items.push(item); // TODO: should be check for item.responseValue or smth
       });
       return items

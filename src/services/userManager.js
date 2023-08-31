@@ -2,6 +2,7 @@ import Cookies from 'js-cookie';
 
 import { useFetch } from '../hooks/useFetch';
 import { useApiRoutes } from '../data/apiRoutes';
+import { ResponseMessage } from '../utils/responseMessage';
 
 
 export const useUserManager = () => {
@@ -14,7 +15,7 @@ export const useUserManager = () => {
     logout();
     
     if (!username || !password) {
-      return {'message': 'Validation error!', 'type': 'error'};
+      return ResponseMessage('Validation error!', 'error');
     }
     
     try {
@@ -28,20 +29,20 @@ export const useUserManager = () => {
     
       if (responseJson) {
         login(responseJson);
-        return {'message': 'Вы успешно вошли!', 'type': 'success'};
+        return ResponseMessage('Вы успешно вошли!', 'success', responseJson);
       }
 
-      return null;
+      throw new Error('Server is unavailable!');
     }
     catch (ex) {
-      return {'message': ex.message, 'type': 'error'};
+      return ResponseMessage(ex.message, 'error');
     }
   }
 
   const signUp = async (fullName, username, email, password) => {
     logout();
     if (!fullName || !username || !email || !password) {
-      return {'message': 'Validation error!', 'type': 'error'};;
+      return ResponseMessage('Validation error!', 'error');
     }
   
     try {
@@ -56,13 +57,13 @@ export const useUserManager = () => {
     
       if (responseJson) {
         login(responseJson);
-        return {'message': 'Вы успешно зарегистрировались!', 'type': 'success'};
+        return ResponseMessage('Вы успешно зарегистрировались!', 'success', responseJson);
       }
       
-      return null;
+      throw new Error('Server is unavailable!');
     }
     catch (ex) {
-      return {'message': ex.message, 'type': 'error'};
+      return ResponseMessage(ex.message, 'error');
     }
   }
 
@@ -78,12 +79,12 @@ export const useUserManager = () => {
       for (const name of cookieNames) {
         Cookies.remove(name);
       }
+      
+      return ResponseMessage('Вы успешно вышли!', 'success');
     }
     catch (ex) {
-      return { message: ex.message, type: 'error' };
+      return ResponseMessage(ex.Message, 'error');
     }
-
-    return { message: 'Вы успешно вышли!', type: 'success' };
   }
   
 
@@ -93,22 +94,23 @@ export const useUserManager = () => {
     const cookieNamesCommon = ['scope', 'userId', 'userName', 'fullName', 'email', 'roles'];
 
     try {
-        Cookies.set('loggedIn', true);
-        Cookies.set('tokenIssuedAt', Math.floor(Date.now() / 1000));
+      Cookies.set('loggedIn', true);
+      Cookies.set('tokenIssuedAt', Math.floor(Date.now() / 1000));
 
-        for (const name of cookieNamesInToken) {
-            Cookies.set(name, token[name]);
-        }
+      for (const name of cookieNamesInToken) {
+        Cookies.set(name, token[name]);
+      }
 
-        for (const name of cookieNamesCommon) {
-            Cookies.set(name, responseJson[name]);
-        }
-    } catch (ex) {
-        return { message: ex.message, type: 'error' };
+      for (const name of cookieNamesCommon) {
+        Cookies.set(name, responseJson[name]);
+      }
+
+      return ResponseMessage('Вы успешно вышли!', 'success');
+    } 
+    catch (ex) {
+      return ResponseMessage(ex.Message, 'error');
     }
-
-    return { message: 'Вы успешно вошли!', type: 'success' };
-};
+  };
 
 
   const getUserById = async (userId) => {
@@ -117,13 +119,13 @@ export const useUserManager = () => {
       var responseJson = await client.getJsonResponse(responseBody);
     
       if (responseJson) {
-        return responseJson;
+        return ResponseMessage(null, 'success', responseJson)
       };
     
-      return null;
+      throw new Error('Server is unavailable!')
     }
     catch (ex) {
-      return {'message': ex.message, 'type': 'error'};
+      return ResponseMessage(ex.message, 'error');
     }
   }
 
@@ -141,10 +143,10 @@ export const useUserManager = () => {
           userInfo[name] = Cookies.get(name);
       }
 
-      return userInfo;
+      return ResponseMessage(null, 'success', userInfo);
     } 
     catch (ex) {
-      return {'message': ex.message, 'type': 'error'};
+      return ResponseMessage(ex.message, 'error');
     }
   };
 
@@ -166,7 +168,7 @@ export const useUserManager = () => {
 
   const isLoggedIn = () => {
     try {
-      const user = getUserSessionInfo();
+      const user = getUserSessionInfo().responseValue;
       if (!user.loggedIn) {
         return false;
       }
@@ -185,7 +187,7 @@ export const useUserManager = () => {
 
 
   const getUserRole = () => {
-    const user = getUserSessionInfo();
+    const user = getUserSessionInfo().responseValue;
     const roles = ['Admin', 'Manager', 'Contributor', 'User'];
     if (user && isLoggedIn()) {
       for (let role of roles) {
@@ -198,7 +200,7 @@ export const useUserManager = () => {
 
 
   const isUserHasRole = (role) => {
-    const user = getUserSessionInfo();
+    const user = getUserSessionInfo().responseValue;
     if (user && isLoggedIn()) {
       if (user.roles.includes(role)) {
         return true;

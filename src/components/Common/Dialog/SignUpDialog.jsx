@@ -36,7 +36,7 @@ const SignUpDialog = () => {
     setIsLoading(false);
 
     if (callbackMessage.type === 'error') {
-      addAlert(callbackMessage.message, 'error')
+      addAlert(callbackMessage.message, callbackMessage.type)
     }
     else {
       enqueueSnackbarReload(callbackMessage.message, callbackMessage.type);

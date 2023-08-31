@@ -2,6 +2,7 @@ import { saveAs } from 'file-saver';
 import { useUserManager } from './userManager';
 import { useFetch } from '../hooks/useFetch';
 import { useApiRoutes } from '../data/apiRoutes';
+import { ResponseMessage } from '../utils/responseMessage';
 
 export const useAssemblyManager = () => {
 
@@ -36,7 +37,7 @@ export const useAssemblyManager = () => {
     try {
       const itemIds = assembly.map((item) => item.item.id);
       var data = JSON.stringify({
-        UserId: userManager.getUserSessionInfo().userId,
+        UserId: userManager.getUserSessionInfo().responseValue.userId,
         AssemblyCategory: 'PC',
         ComponentIds: itemIds,
       });
@@ -44,24 +45,23 @@ export const useAssemblyManager = () => {
       var responseBody = await client.postOne(api.assemblyRoutes['createOne'], data, null);
       var responseJson = await client.getJsonResponse(responseBody);
 
-      return responseJson; // TODO: it also should return success message (was: successHandler)
+      return ResponseMessage("Success", 'success', responseJson);
     }
     catch (ex) {
-      return {'message': ex.message, 'type': 'error'};
+      return ResponseMessage(ex.message, 'error');
     }
-
   }
 
   const getAssembliesByUserId = async () => {
     try {
       var responseBody = await client.getMany(api.assemblyRoutes['getOneByUserId'] + userManager
-        .getUserSessionInfo().userId, null, null);
+        .getUserSessionInfo().responseValue.userId, null, null);
       var responseJson = await client.getJsonResponse(responseBody);
         
-      return responseJson;
+      return ResponseMessage(null, 'success', responseJson);
     }
     catch (ex) {
-      return {'message': ex.message, 'type': 'error'};
+      return ResponseMessage(ex.message, 'error');
     }
   }
 

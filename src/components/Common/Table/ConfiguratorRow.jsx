@@ -132,9 +132,9 @@ export default function ConfiguratorRow({ item, index, assemblyHandler, errorHan
   async function getComponents(page) {
     // const filter = getStartRule(item.componentNames[0]);
     const filter = foreachComponentRule(item.componentNames[0]);
-    const components = await aggregatorManager.getComponentsAsPageByFilter(page, 4, filter, searchValue);
+    const components = (await aggregatorManager.getComponentsAsPageByFilter(page, 4, filter, searchValue)).responseValue;
     // TODO: (4 and getPageCount)
-    setPageCount(await aggregatorManager.getPageCount(4, filter));
+    setPageCount(await aggregatorManager.getPageCount(4, filter).responseValue);
     setMenuComponents(components);
   }
   

@@ -1,5 +1,6 @@
 import { useApiRoutes } from "../data/apiRoutes";
 import { useFetch } from "../hooks/useFetch";
+import { ResponseMessage } from "../utils/responseMessage";
 
 export const useConfiguratorManager = () => {
 
@@ -12,10 +13,10 @@ export const useConfiguratorManager = () => {
       var responseBody = await client.getMany(api.configuratorRoutes['getTypes'], null, null);
       var responseJson = await client.getJsonResponse(responseBody)
       
-      return responseJson;
+      return ResponseMessage(null, 'success', responseJson);
     }
     catch (ex) {
-      return {'message': ex.message, 'type': 'error'};
+      return ResponseMessage(ex.message, 'error');
     }
   }
 

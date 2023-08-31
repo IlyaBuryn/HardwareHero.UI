@@ -9,14 +9,14 @@ import { useErrorMessage, ErrorSnackbar } from '../../Common/Snackbar/ErrorSnack
 export default function DeniedBox({ contrId }) {
   const [error, handleErrorMessageChange, clearErrorMessage] = useErrorMessage();  
   const [contributorId, setContributorId] = useState('');
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const contributorManager = useContributorManager();
 
 
   const handleDeleteContributor = async () => {
-    const response = await contributorManager.deleteContributor(contributorId);
-    if (response) {
+    const responseMessage = await contributorManager.deleteContributor(contributorId);
+    if (responseMessage.responseValue) {
       navigate('/home');
     }
   }

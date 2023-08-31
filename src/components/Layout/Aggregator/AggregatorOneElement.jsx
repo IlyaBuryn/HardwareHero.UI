@@ -48,7 +48,7 @@ export default function AggregatorOneElement() {
       if (componentId === null) {
         setComponentData(null);
       } else {
-        const componentResponse = await aggregatorManager.getComponentById(componentId);
+        const componentResponse = (await aggregatorManager.getComponentById(componentId)).responseValue;
         setComponentData(componentResponse);
       }
     };

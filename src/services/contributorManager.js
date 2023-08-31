@@ -1,5 +1,6 @@
 import { useApiRoutes } from "../data/apiRoutes";
 import { useFetch } from "../hooks/useFetch";
+import { ResponseMessage } from "../utils/responseMessage";
 import { useUserManager } from "./userManager";
 
 export const useContributorManager = () => {
@@ -11,7 +12,7 @@ export const useContributorManager = () => {
 
   const createContributor = async (region, companyName, companyUrl, logoName, logo) => {
     const data = JSON.stringify({
-      userId: userManager.getUserSessionInfo().userId,
+      userId: userManager.getUserSessionInfo().responseValue.userId,
       region: region,
       contributorExcellence: {
         name: companyName,
@@ -25,12 +26,11 @@ export const useContributorManager = () => {
         var responseBody = await client.postOne(api.contributorRoutes['createOne'], data, null);
         var responseJson = await client.getJsonResponse(responseBody);
   
-        return responseJson;
-        // TODO: I can return value from responseJson in object as: {'message': ex.message, 'type': 'error', 'responseValue': responseJson ?? null}
+        return ResponseMessage(null, 'success', responseJson);
       }
     }
     catch (ex) {
-      return {'message': ex.message, 'type': 'error'};
+      return ResponseMessage(ex.message, 'error');
     }
   }
 
@@ -40,16 +40,16 @@ export const useContributorManager = () => {
       var responseBody = await client.getOne(api.contributorRoutes['getOneByName'] + name, null);
       var responseJson = await client.getJsonResponse(responseBody);
   
-      return responseJson;
+      return ResponseMessage(null, 'success', responseJson);
     }
     catch (ex) {
-      return {'message': ex.message, 'type': 'error'};
+      return ResponseMessage(ex.message, 'error');
     }
   }
 
 
   const acceptContributorRequest = async (contributor) => {
-    // TODO: set method at backend
+    // TODO: set this method to backend
     try {
       contributor.isConfirmed = true;
       var responseUpdateBody = await client.putOne(api.contributorRoutes['updateOne'], JSON.stringify(contributor), null);
@@ -59,19 +59,19 @@ export const useContributorManager = () => {
         const message = JSON.stringify({
           messageTitle: 'Contributor',
           messageContent: 'You accepted',
-          recipientsEmailAddress: userManager.getUserSessionInfo().email,
-          senderId: userManager.getUserSessionInfo().userId
+          recipientsEmailAddress: userManager.getUserSessionInfo().responseValue.email,
+          senderId: userManager.getUserSessionInfo().responseValue.userId
         });
         var responseEmailBody = await client.postOne(api.contributorRoutes['sendEmail'], message, null);
         var responseEmailJson = await client.getJsonResponse(responseEmailBody);
   
-        return responseEmailJson;
+        return ResponseMessage(null, 'success', responseEmailJson)
       }
       
-      return null;
+      throw new Error('');
     }
     catch (ex) {
-      return {'message': ex.message, 'type': 'error'};
+      return ResponseMessage(ex.message, 'error');
     }
   }
 
@@ -98,10 +98,10 @@ export const useContributorManager = () => {
       var responseBody = await client.getOne(api.contributorRoutes['getOneByUserId'] + userId, null);
       var responseJson = await client.getJsonResponse(responseBody);
 
-      return responseJson;
+      return ResponseMessage(null, 'success', responseJson);
     }
     catch (ex) {
-      return {'message': ex.message, 'type': 'error'};
+      return ResponseMessage(ex.message, 'error');
     }
   }
   
@@ -111,10 +111,10 @@ export const useContributorManager = () => {
       var responseBody = await client.getMany(api.contributorRoutes['getMany'], null, null);
       var responseJson = await client.getJsonResponse(responseBody);
 
-      return responseJson;
+      return ResponseMessage(null, 'success', responseJson);
     }
     catch (ex) {
-      return {'message': ex.message, 'type': 'error'};
+      return ResponseMessage(ex.message, 'error');
     }
   }
 
@@ -124,10 +124,10 @@ export const useContributorManager = () => {
       var responseBody = await client.deleteOne(api.contributorRoutes['deleteOne'] + contributorId, null);
       var responseJson = await client.getJsonResponse(responseBody);
 
-      return responseJson;
+      return ResponseMessage(null, 'success', responseJson);
     }
     catch (ex) {
-      return {'message': ex.message, 'type': 'error'};
+      return ResponseMessage(ex.message, 'error');
     }
   }
 

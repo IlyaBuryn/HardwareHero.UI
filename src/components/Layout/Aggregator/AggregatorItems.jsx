@@ -105,9 +105,9 @@ function AggregatorItems() {
   const trySetData = async (page) => {
     handleLoadingChange(true);
     const filter = '{}';
-    const components = await aggregatorManager.getComponentsAsPageByFilter(page, itemsPerPage, filter, searchValue);
+    const components = (await aggregatorManager.getComponentsAsPageByFilter(page, itemsPerPage, filter, searchValue)).responseValue;
     setData(components)
-    setPageCount(await aggregatorManager.getPageCount(itemsPerPage, filter, searchValue));
+    setPageCount(await aggregatorManager.getPageCount(itemsPerPage, filter, searchValue).responseValue);
     handleLoadingChange(false); 
   }
 

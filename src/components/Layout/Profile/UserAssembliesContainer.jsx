@@ -16,7 +16,7 @@ const UserAssembliesContainer = ({ isListOpen }) => {
   async function getAssemblies() {
     if (isListOpen) {
       try {
-        var items = await assemblyManager.getAssembliesByUserId()
+        var items = (await assemblyManager.getAssembliesByUserId()).responseValue
         setAssemblies(items);
       }
       catch (ex) {

@@ -29,9 +29,9 @@ function DropdownMenu({ contributorName }) {
   }
 
   const handleConfirm = async () => {
-    const contributor = await contributorManager.getContributorByName(contributorName ?? " ");
-    var response = await contributorManager.acceptContributorRequest(contributor)
-    console.log("response: ", response);
+    const contributor = (await contributorManager.getContributorByName(contributorName ?? " ")).responseValue;
+    var response = (await contributorManager.acceptContributorRequest(contributor)).responseValue;
+    // TODO: is separate?
   }
 
   const handleDenied = () => {
@@ -94,9 +94,8 @@ export default function ContributorRequests() {
     async function tryGetContributors() {
       setIsLoadingScreen(true)
         
-        var contributors = await contributorManager.getAllContributors();
-        if (contributors !== null) {
-          
+        var contributors = await contributorManager.getAllContributors().responseValue;
+        if (contributors) {
           setData(contributors);
         }
         else {
@@ -153,9 +152,12 @@ export default function ContributorRequests() {
   }
   
   const handleContributorInfoClick = async (item) => {
-    console.log(item)
-    var user = await userManager.getUserById(item.id, errorHandler);
-    console.log('user', user)
+    const responseMessage = await userManager.getUserById(item.id);
+    if (!responseMessage.responseValue) {
+      errorHandler(responseMessage.message); // TODO: Bruh
+    }
+    
+    var user = responseMessage.responseValue;
     if (user !== null) {
       const updatedUser = { ...user, ...item };
       setUserInfo(updatedUser);

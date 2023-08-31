@@ -17,8 +17,8 @@ function RightHeaderControls() {
 
   useEffect(() => {
     if (userManager.isLoggedIn()) {
-      setUserFullName(userManager.getUserSessionInfo().fullName);
-      setUserRole(userManager.getUserRole())
+      setUserFullName(userManager.getUserSessionInfo().responseValue.fullName);
+      setUserRole(userManager.getUserRole().responseValue)
     }
   }, []);
 
@@ -35,7 +35,7 @@ function RightHeaderControls() {
             {t("Role.1")}: {userRole}
             </Typography>
           </Stack>
-          <ProfileMenu user={userManager.getUserSessionInfo()} />
+          <ProfileMenu user={userManager.getUserSessionInfo().responseValue} />
         </>
       ) : <AuthDialogButtons />}
     </Stack>
