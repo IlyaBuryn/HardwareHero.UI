@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Box, Alert, Button, Stack } from '@mui/material';
 
-import { deleteContributor } from '../../../services/contributorManager';
+import { useContributorManager } from '../../../services/contributorManager';
 import { useErrorMessage, ErrorSnackbar } from '../../Common/Snackbar/ErrorSnackbar';
 
 export default function DeniedBox({ contrId }) {
@@ -11,10 +11,11 @@ export default function DeniedBox({ contrId }) {
   const [contributorId, setContributorId] = useState('');
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const contributorManager = useContributorManager();
 
 
   const handleDeleteContributor = async () => {
-    const response = await deleteContributor(handleErrorMessageChange, contributorId);
+    const response = await contributorManager.deleteContributor(contributorId);
     if (response) {
       navigate('/home');
     }

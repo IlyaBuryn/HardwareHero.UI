@@ -8,7 +8,7 @@ import { Button, IconButton,
   FormGroup, FormControl, OutlinedInput  } from '@mui/material';
 
 import PasswordCheck from '../Password/PasswordCheck';
-import { signUp } from '../../../services/userManager';
+import { useUserManager } from '../../../services/userManager';
 import './Dialog.css'
 import AlertBlock from '../Alert/AlertBlock';
 import { lightLinks } from '../../../utils/theme';
@@ -28,10 +28,11 @@ const SignUpDialog = () => {
   const addAlert = useAlert();
   const enqueueSnackbarReload = useSnackbarBeforeReload();
   const { isSignInModalOpen, setIsSignInModalOpen, isSignUpModalOpen, setIsSignUpModalOpen } = useAuthDialog();
+  const userManager = useUserManager();
 
   const processRegistration = async () => {
     setIsLoading(true);
-    const callbackMessage = await signUp(name, username, email, passwordValue);
+    const callbackMessage = await userManager.signUp(name, username, email, passwordValue);
     setIsLoading(false);
 
     if (callbackMessage.type === 'error') {

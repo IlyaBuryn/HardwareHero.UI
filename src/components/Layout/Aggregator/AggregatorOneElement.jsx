@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getComponentById } from "../../../services/aggregatorManager";
+import { useAggregatorManager } from "../../../services/aggregatorManager";
 import { Alert, Avatar, Box, Container, Grid, Link, List, ListItem, ListItemAvatar, Paper, Tab, Tabs, Typography } from "@mui/material";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-import { themeColors } from "../../../utils/colors";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -42,13 +41,14 @@ export default function AggregatorOneElement() {
   const [tabValue, setTabValue] = useState(0);
   const location = useNavigate();
   const { componentId } = useParams();
+  const aggregatorManager = useAggregatorManager();
 
   useEffect(() => {
     const fetchData = async () => {
       if (componentId === null) {
         setComponentData(null);
       } else {
-        const componentResponse = await getComponentById(errorHandler, componentId);
+        const componentResponse = await aggregatorManager.getComponentById(componentId);
         setComponentData(componentResponse);
       }
     };

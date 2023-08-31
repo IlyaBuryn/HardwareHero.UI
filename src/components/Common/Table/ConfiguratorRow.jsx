@@ -13,7 +13,7 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import DeepList from "./DeepList";
-import { getComponentsAsPageByFilter, getPageCount } from "../../../services/aggregatorManager";
+import { useAggregatorManager } from "../../../services/aggregatorManager";
 import { createRule, deleteRule, foreachComponentRule, getSpecificIndex, getStartRule, setSpecificItemToConfiguration } from "../../../services/Rules/RuleManager";
 
 const baseImageUrl = 'http://localhost/images/';
@@ -91,6 +91,7 @@ export default function ConfiguratorRow({ item, index, assemblyHandler, errorHan
   const [pageCount, setPageCount] = useState(10);
   const [searchValue, setSearchValue] = useState('');
   const [navigationValue, setNavigationValue] = useState(0);
+  const aggregatorManager = useAggregatorManager();
 
   const handleMenuItemClick = (value) => {
     setSelectedItem(value);
@@ -131,9 +132,9 @@ export default function ConfiguratorRow({ item, index, assemblyHandler, errorHan
   async function getComponents(page) {
     // const filter = getStartRule(item.componentNames[0]);
     const filter = foreachComponentRule(item.componentNames[0]);
-    const components = await getComponentsAsPageByFilter(errorHandler, page, 4, filter, searchValue);
-    // !
-    setPageCount(await getPageCount(errorHandler, 4, filter));
+    const components = await aggregatorManager.getComponentsAsPageByFilter(page, 4, filter, searchValue);
+    // TODO: (4 and getPageCount)
+    setPageCount(await aggregatorManager.getPageCount(4, filter));
     setMenuComponents(components);
   }
   

@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Menu, MenuItem, Avatar, Box, CircularProgress, Container, Chip } from '@mui/material';
 import { MoreVert as MoreVertIcon, Done as DoneIcon, Cancel as CancelIcon, Chat as ChatIcon } from '@mui/icons-material';
-import { checkUserRole, getUserById } from '../../../services/userManager';
-import { acceptContributorRequest, getAllContributors, getContributorByName } from '../../../services/contributorManager';
+import { useUserManager } from '../../../services/userManager';
+import { useContributorManager } from '../../../services/contributorManager';
 import SortIcon from '@mui/icons-material/Sort';
 import FaceIcon from '@mui/icons-material/Face';
 import { ContributorInfoDialog } from '../../Common/Dialog/UserInfoDialogs';
@@ -14,6 +14,7 @@ const baseImageUrl = 'http://localhost/images/';
 
 function DropdownMenu({ contributorName }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const contributorManager = useContributorManager();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -28,8 +29,8 @@ function DropdownMenu({ contributorName }) {
   }
 
   const handleConfirm = async () => {
-    const contributor = await getContributorByName(errorHandler, contributorName ?? " ");
-    var response = await acceptContributorRequest(errorHandler, contributor)
+    const contributor = await contributorManager.getContributorByName(contributorName ?? " ");
+    var response = await contributorManager.acceptContributorRequest(contributor)
     console.log("response: ", response);
   }
 
@@ -87,12 +88,13 @@ export default function ContributorRequests() {
   const [userInfo, setUserInfo] = useState(null);
 
   const [data, setData] = useState([]);
+  const userManager = useUserManager();
 
   useEffect(() => {
     async function tryGetContributors() {
       setIsLoadingScreen(true)
         
-        var contributors = await getAllContributors(placeholderHandler);
+        var contributors = await contributorManager.getAllContributors();
         if (contributors !== null) {
           
           setData(contributors);
@@ -105,10 +107,6 @@ export default function ContributorRequests() {
 
     tryGetContributors();
   }, []) // !
-
-
-  const placeholderHandler = (str) => { }
-
 
 
   const handleSort = (column) => {
@@ -156,7 +154,7 @@ export default function ContributorRequests() {
   
   const handleContributorInfoClick = async (item) => {
     console.log(item)
-    var user = await getUserById(item.id, errorHandler);
+    var user = await userManager.getUserById(item.id, errorHandler);
     console.log('user', user)
     if (user !== null) {
       const updatedUser = { ...user, ...item };
@@ -175,7 +173,7 @@ export default function ContributorRequests() {
 
   useEffect(() => {
     setIsLoadingScreen(true)
-    if (checkUserRole('Manager') === false) {
+    if (userManager.isUserHasRole('Manager') === false) {
       navigate('/home');
     }
     else {

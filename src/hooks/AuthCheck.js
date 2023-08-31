@@ -1,14 +1,15 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { isSessionUser } from '../services/userManager';
+import { useUserManager } from '../services/userManager';
 
 const useAuthCheck = () => {
   const navigate = useNavigate();
+  const userManager = useUserManager();
 
   useEffect(() => {
     try {
-      if (!isSessionUser()) {
+      if (!userManager.isLoggedIn()) {
         navigate('/unauthorized');
       }
     }
@@ -17,7 +18,7 @@ const useAuthCheck = () => {
     }
   }, []);
 
-  return isSessionUser();
+  return userManager.isLoggedIn();
 };
 
 export default useAuthCheck;

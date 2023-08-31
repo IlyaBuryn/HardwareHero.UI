@@ -1,18 +1,25 @@
-import { getAll, getJsonResponse } from "../utils/clientConnect";
+import { useFetch } from "../hooks/useFetch";
 
-const getComponentTypesRoute = 'gateway/configurator/component-type-signs';
+export const useConfiguratorManager = () => {
 
-export async function getComponentTypes(handleErrorMessageChange) {
+  const getComponentTypesRoute = 'gateway/configurator/component-type-signs';
 
-  var responseBody = await getAll(getComponentTypesRoute, handleErrorMessageChange, null, null);
+  const client = useFetch();
 
-  var responseJson = await getJsonResponse(responseBody, handleErrorMessageChange)
 
-  if (responseJson) {
-    return responseJson;
+  const getComponentTypes = async () => {
+    try {
+      var responseBody = await client.getMany(getComponentTypesRoute, null, null);
+      var responseJson = await client.getJsonResponse(responseBody)
+      
+      return responseJson;
+    }
+    catch (ex) {
+      return {'message': ex.message, 'type': 'error'};
+    }
   }
-  else {
-    handleErrorMessageChange('Response error!');
-    return [];
+
+  return {
+    getComponentTypes,
   }
 }

@@ -21,14 +21,14 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-import { getComponentTypes } from '../../../services/configuratorManager';
+import { useConfiguratorManager } from '../../../services/configuratorManager';
 import { ErrorSnackbar, useErrorMessage } from '../../Common/Snackbar/ErrorSnackbar';
 import { SuccessSnackbar, useSuccessMessage } from '../../Common/Snackbar/SuccessSnackbar';
 
 import { useTranslation } from 'react-i18next';
 import ConfiguratorRow from '../../Common/Table/ConfiguratorRow';
-import { getAssembliesByUserId, saveAsseblyToDatabase, saveJsonAsembly } from '../../../services/assemblyManager';
-import { getUserFromCookie, isSessionUser } from '../../../services/userManager';
+import { useAssemblyManager } from '../../../services/assemblyManager';
+import { useUserManager } from '../../../services/userManager';
 import CanvasGraph from '../../Common/Graph/CanvasGraph';
 
 const baseImageUrl = 'http://localhost/images/';
@@ -89,15 +89,18 @@ const ConfiguratorMain = ({ readyComponents }) => {
   
   const [error, handleErrorMessageChange, clearErrorMessage] = useErrorMessage();
   const [alert, handleSuccessMessageChange, clearSuccessMessage] = useSuccessMessage();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const userManager = useUserManager();
+  const configuratorManager = useConfiguratorManager();
+  const assemblyManager = useAssemblyManager();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         clearErrorMessage();
         handleLoadingChange(true);
-        trySetData(await getComponentTypes(handleErrorMessageChange, handleLoadingChange));
+        trySetData(await configuratorManager.getComponentTypes());
         handleLoadingChange(false);
       } catch (error) {
         handleErrorMessageChange(error.message);
@@ -133,7 +136,7 @@ const ConfiguratorMain = ({ readyComponents }) => {
 
   async function handleDownloadJsonButtonClick() {
     clearErrorMessage()
-    saveJsonAsembly(handleErrorMessageChange, assembly.map(transformData))
+    assemblyManager.saveJsonAsembly(assembly.map(transformData))
     await clearSuccessMessage();
     await handleSuccessMessageChange('Файл отправлен!')
   }
@@ -146,7 +149,7 @@ const ConfiguratorMain = ({ readyComponents }) => {
 
       if (confirmed) {
         await clearSuccessMessage();
-        await saveAsseblyToDatabase(handleErrorMessageChange, handleSuccessMessageChange, assembly);
+        await assemblyManager.saveAsseblyToDatabase(assembly);
 
       }
       else {
@@ -155,14 +158,14 @@ const ConfiguratorMain = ({ readyComponents }) => {
       }
     }
     else {
-      await saveAsseblyToDatabase(handleErrorMessageChange, handleSuccessMessageChange, assembly);
+      await assemblyManager.saveAsseblyToDatabase(assembly);
     }
   }
 
 
   async function handleChoiseButtonClick() {
     try {
-      const assembliesCount = await getAssembliesByUserId(handleErrorMessageChange, getUserFromCookie().userId).length;
+      const assembliesCount = await assemblyManager.getAssembliesByUserId(userManager.getUserSessionInfo().userId).length;
       if (assembliesCount == 0) {
         await clearErrorMessage();
         await handleErrorMessageChange('У вас нет ни одной сборки!');
@@ -301,7 +304,7 @@ const ConfiguratorMain = ({ readyComponents }) => {
                 <TableRow>
                   <TableCell colSpan={3}>
 
-                    { isSessionUser() ? (
+                    { userManager.isLoggedIn() ? (
                       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: 'black', mb: 2 }}>
                         <Stack direction="row" spacing={2}>
                           <Button onClick={handleSaveButtonClick} sx={{ fontWeight: 'bold' }} variant='contained' color='secondary'>Сохранить</Button>

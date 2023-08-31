@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom"
+import { Routes, Route } from "react-router-dom"
 import { ThemeProvider } from "@mui/material";
 
 import ConfiguratorPage from './pages/Configurator/ConfiguratorPage';
@@ -23,27 +23,27 @@ function App() {
 
   useExecuteAfterReload();
 
+  const routes = [{ path: "/", element: <HomePage /> },
+    { path: "/home", element: <HomePage /> },
+    { path: "/tests", element: <TestPage /> },
+    { path: "/configurator", element: <ConfiguratorPage /> },
+    { path: "/account", element: <ProfilePage /> },
+    { path: "/prices", element: <AggregatorPage /> },
+    { path: "/contributor", element: <ContributorPage /> },
+    { path: "/contributor-requests", element: <ContributorRequestsPage /> },
+    { path: "/prices/:componentId", element: <AggregatorOneElement /> },
+    { path: "/unauthorized", element: <UnauthorizedPage /> },
+    { path: "/forbidden", element: <ForbiddenPage /> }]
+    
   return (
     <>
       <ThemeProvider theme={standardTheme}>
         <AuthDialogProvider >
           <Routes>
-
-            <Route path="/" element={ <Navigate to="/home" /> } />
-            <Route path="/tests" element={ <TestPage /> } />
-            <Route path="/home" element={ <HomePage /> } />
-            <Route path="/configurator" element={ <ConfiguratorPage /> } />
-            <Route path="/account" element={ <ProfilePage /> } />
-            <Route path="/prices" element={ <AggregatorPage /> } />
-            <Route path="/contributor" element={ <ContributorPage /> } />
-            <Route path='/contributor-requests' element={ <ContributorRequestsPage /> } />
-            <Route path="/prices/:componentId" element={ <AggregatorOneElement /> } />
-
-            <Route path="/unauthorized" element={ <UnauthorizedPage /> } />
-            <Route path="/forbidden" element={ <ForbiddenPage /> } />
-
+            {routes.map((route) => {
+              return <Route path={ route.path } element={ route.element } />
+            })}
           </Routes>
-
           <SnackbarBlock />
         </AuthDialogProvider>
       </ThemeProvider>

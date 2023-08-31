@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Container, Grid } from "@mui/material";
 import MyAssemblies from "../Assemblies/MyAssemblies";
-import { getAssembliesByUserId } from '../../../services/assemblyManager';
+import { useAssemblyManager } from '../../../services/assemblyManager';
 
 
 const UserAssembliesContainer = ({ isListOpen }) => {
 
   const [assemblies, setAssemblies] = useState([]);
+  const assemblyManager = useAssemblyManager();
 
   const errorHandler = (str) => {
     console.log(str);
@@ -15,7 +16,7 @@ const UserAssembliesContainer = ({ isListOpen }) => {
   async function getAssemblies() {
     if (isListOpen) {
       try {
-        var items = getAssembliesByUserId(errorHandler)
+        var items = await assemblyManager.getAssembliesByUserId()
         setAssemblies(items);
       }
       catch (ex) {

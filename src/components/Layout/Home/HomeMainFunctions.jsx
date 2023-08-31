@@ -7,7 +7,7 @@ import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import HandshakeIcon from '@mui/icons-material/Handshake';
 import SettingsInputComponentIcon from '@mui/icons-material/SettingsInputComponent';
 
-import { isSessionUser } from '../../../services/userManager';
+import { useUserManager } from '../../../services/userManager';
 import { useSnackbarQueue } from '../../Common/Snackbar/SnackbarQueue';
 import CircularIconButton from '../../Common/Buttons/CircularIconButton/CircularIconButton';
 import { useAuthDialog } from '../../Common/Dialog/AuthDialogContext';
@@ -18,6 +18,7 @@ const HomeMainFunctions = () => {
   const { t } = useTranslation();
   const enqueueSnackbar = useSnackbarQueue();
   const { setIsSignInModalOpen } = useAuthDialog();
+  const userManager = useUserManager();
 
   const switchToSignInDialog = () => {
     enqueueSnackbar(t("Warnings.UnauthorizedToContributorPage"), 'warning');
@@ -37,7 +38,7 @@ const HomeMainFunctions = () => {
           />
 
           <CircularIconButton
-            to={isSessionUser() ? '/account' : null}
+            to={userManager.isLoggedIn() ? '/account' : null}
             icon={AccountCircleIcon}
             titleTranslationKey="Options.Account"
             descriptionTranslationKey="HomeButtonsDescription.account"
@@ -67,7 +68,7 @@ const HomeMainFunctions = () => {
           />
 
           <CircularIconButton
-            to={isSessionUser() ? '/contributor' : null}
+            to={userManager.isLoggedIn() ? '/contributor' : null}
             icon={HandshakeIcon}
             titleTranslationKey="Options.Contributors"
             descriptionTranslationKey="HomeButtonsDescription.contributors"

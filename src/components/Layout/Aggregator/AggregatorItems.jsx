@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardMedia,
   Typography, Pagination, Box,
   CircularProgress, Paper, Avatar, Container,
-  Button, Stack, IconButton, TextField, Checkbox, FormControl, InputLabel, Select, MenuItem, FormControlLabel, FormGroup, Link } from '@mui/material';
+  Button, Stack, IconButton, TextField, FormControl, InputLabel, Select, MenuItem, Link } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import { getComponentsAsPageByFilter, getPageCount } from '../../../services/aggregatorManager';
+import { useAggregatorManager } from '../../../services/aggregatorManager';
 import { useErrorMessage, ErrorSnackbar } from '../../Common/Snackbar/ErrorSnackbar';
 import CanvasGraph from '../../Common/Graph/CanvasGraph';
 import { useNavigate } from 'react-router-dom';
@@ -74,8 +74,9 @@ function AggregatorItems() {
   const [error, handleErrorMessageChange, clearErrorMessage] = useErrorMessage();
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const aggregatorManager = useAggregatorManager();
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 10; // TODO: 10
   
 
   useEffect(() => {
@@ -104,10 +105,9 @@ function AggregatorItems() {
   const trySetData = async (page) => {
     handleLoadingChange(true);
     const filter = '{}';
-    const components = await getComponentsAsPageByFilter(handleErrorMessageChange, page, itemsPerPage, filter, searchValue);
-    console.log(components);
+    const components = await aggregatorManager.getComponentsAsPageByFilter(page, itemsPerPage, filter, searchValue);
     setData(components)
-    setPageCount(await getPageCount(handleErrorMessageChange, itemsPerPage, filter, searchValue));
+    setPageCount(await aggregatorManager.getPageCount(itemsPerPage, filter, searchValue));
     handleLoadingChange(false); 
   }
 

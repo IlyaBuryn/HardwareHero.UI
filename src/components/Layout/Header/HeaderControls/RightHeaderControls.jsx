@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Stack, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-import { getUserFromCookie, getUserRole, isSessionUser } from '../../../../services/userManager';
+import { useUserManager } from '../../../../services/userManager';
 import ProfileMenu from '../../../Common/Menu/ProfileMenu';
 import AuthDialogButtons from '../../DialogButtons/AuthDialogButtons';
 import './../Header.css';
@@ -13,11 +13,12 @@ function RightHeaderControls() {
   const [userFullName, setUserFullName] = useState('');
   const [userRole, setUserRole] = useState('')
   const { t } = useTranslation();
+  const userManager = useUserManager();
 
   useEffect(() => {
-    if (isSessionUser()) {
-      setUserFullName(getUserFromCookie().fullName);
-      setUserRole(getUserRole())
+    if (userManager.isLoggedIn()) {
+      setUserFullName(userManager.getUserSessionInfo().fullName);
+      setUserRole(userManager.getUserRole())
     }
   }, []);
 
@@ -34,7 +35,7 @@ function RightHeaderControls() {
             {t("Role.1")}: {userRole}
             </Typography>
           </Stack>
-          <ProfileMenu user={getUserFromCookie()} />
+          <ProfileMenu user={userManager.getUserSessionInfo()} />
         </>
       ) : <AuthDialogButtons />}
     </Stack>

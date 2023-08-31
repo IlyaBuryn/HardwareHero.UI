@@ -1,169 +1,157 @@
-import { postOne, getJsonResponse, getOne, deleteOne, uploadImage, getAll, putOne } from "../utils/clientConnect";
-import { getUserFromCookie } from "./userManager";
+import { useFetch } from "../hooks/useFetch";
+import { useUserManager } from "./userManager";
 
-const createContributorRoute = 'gateway/contributor';
-const getContributorByUserIdRoute = 'gateway/contributor/by-user/';
-const deleteContributorRoute = 'gateway/contributor/';
-const uploadImageRoute = 'gateway/contributor/upload-image';
-const getAllContributorsRoute = 'gateway/contributor';
-const updateContributorRoute = 'gateway/contributor';
-const getContributrByNameRoute = 'gateway/contributor/';
-const sendEmailMessageRoute = 'gateway/mail/send';
+export const useContributorManager = () => {
+  
+  // TODO: Move routes to /data directory
+  const createContributorRoute = 'gateway/contributor';
+  const getContributorByUserIdRoute = 'gateway/contributor/by-user/';
+  const deleteContributorRoute = 'gateway/contributor/';
+  const uploadImageRoute = 'gateway/contributor/upload-image';
+  const getAllContributorsRoute = 'gateway/contributor';
+  const updateContributorRoute = 'gateway/contributor';
+  const getContributrByNameRoute = 'gateway/contributor/';
+  const sendEmailMessageRoute = 'gateway/mail/send';
 
-export async function createContributor(errorHandler, region, companyName, companyUrl, logoName, logo) {
-  const data = JSON.stringify({
-    userId: getUserFromCookie().userId,
-    region: region,
-    contributorExcellence: {
-      name: companyName,
-      logo: logoName
-    }
-  });
+  const userManager = useUserManager();
+  const client = useFetch();
 
-  try {
-    var logoResponseBody = await uploadImage(uploadImageRoute, errorHandler, logo, logoName);
 
-    if (logoResponseBody.ok) {
-      var responseBody = await postOne(createContributorRoute, errorHandler, data, null);
-      var responseJson = await getJsonResponse(responseBody, errorHandler);
-
-      if (responseJson && responseBody.ok) {
+  const createContributor = async (region, companyName, companyUrl, logoName, logo) => {
+    const data = JSON.stringify({
+      userId: userManager.getUserSessionInfo().userId,
+      region: region,
+      contributorExcellence: {
+        name: companyName,
+        logo: logoName
+      }
+    });
+  
+    try {
+      var logoResponseBody = await client.postImage(uploadImageRoute, logo, logoName);
+      if (logoResponseBody.ok) {
+        var responseBody = await client.postOne(createContributorRoute, data, null);
+        var responseJson = await client.getJsonResponse(responseBody);
+  
         return responseJson;
+        // TODO: I can return value from responseJson in object as: {'message': ex.message, 'type': 'error', 'responseValue': responseJson ?? null}
       }
     }
+    catch (ex) {
+      return {'message': ex.message, 'type': 'error'};
+    }
   }
-  catch (ex) {
-    console.error('Ошибка при выполнении запроса: ', ex);
-    errorHandler('Response error!');
-    return null;
-  }
-}
 
-export async function getContributorByName(errorHandler, name) {
-  try {
-    var responseBody = await getOne(getContributrByNameRoute + name, errorHandler, null);
-    var responseJson = await getJsonResponse(responseBody, errorHandler);
 
-    if (responseJson && responseBody.ok) {
+  const getContributorByName = async (name) => {
+    try {
+      var responseBody = await client.getOne(getContributrByNameRoute + name, null);
+      var responseJson = await client.getJsonResponse(responseBody);
+  
       return responseJson;
     }
-    else {
-      return null;
+    catch (ex) {
+      return {'message': ex.message, 'type': 'error'};
     }
   }
-  catch (ex) {
-    errorHandler('Response error!');
-    return null;
-  }
-}
 
-export async function acceptContributorRequest(errorHandler, contributor) {
-  try {
 
-    contributor.isConfirmed = true;
-    console.log(contributor);
-    var responseUpdateBody = await putOne(updateContributorRoute, errorHandler, JSON.stringify(contributor), null);
-    var responseUpdateJson = await getJsonResponse(responseUpdateBody, errorHandler);
-
-    if (responseUpdateBody.ok && responseUpdateJson) {
-      const message = JSON.stringify({
-        messageTitle: 'Contributor',
-        messageContent: 'You accepted',
-        recipientsEmailAddress: getUserFromCookie().email,
-        senderId: getUserFromCookie().userId
-      });
-      var responseEmailBody = await postOne(sendEmailMessageRoute, errorHandler, message, null);
-      var responseEmailJson = await getJsonResponse(responseEmailBody, errorHandler);
-
-      if (!responseEmailBody.ok) {
-        errorHandler('Не удалось отправить сообщение на почту по причине ошибки в запросе отправления email сообщений');
-        return null;
-      }
-      else {
+  const acceptContributorRequest = async (contributor) => {
+    // TODO: set method at backend
+    try {
+      contributor.isConfirmed = true;
+      var responseUpdateBody = await client.putOne(updateContributorRoute, JSON.stringify(contributor), null);
+      var responseUpdateJson = await client.getJsonResponse(responseUpdateBody);
+  
+      if (responseUpdateJson) {
+        const message = JSON.stringify({
+          messageTitle: 'Contributor',
+          messageContent: 'You accepted',
+          recipientsEmailAddress: userManager.getUserSessionInfo().email,
+          senderId: userManager.getUserSessionInfo().userId
+        });
+        var responseEmailBody = await client.postOne(sendEmailMessageRoute, message, null);
+        var responseEmailJson = await client.getJsonResponse(responseEmailBody);
+  
         return responseEmailJson;
       }
-    }
-    else {
-      errorHandler('Не удалось отправить сообщение на почту по причине ошибки в запросе обновления');
+      
       return null;
     }
-  }
-  catch (ex) {
-    errorHandler('Response error!');
-    return null;
-  }
-}
-
-export async function deniedContributorRequest(errorHandler, contributor) {
-
-}
-
-export async function createChatWithContributor(errorHandler, contributorId) {
-
-}
-
-export async function getChat(errorHandler, contributorId, cooperatorId) {
-
-}
-
-export async function sendMessage(errorHandler, senderId, recipientId) {
-
-}
-
-export async function getContributorByUserId(errorHandler, userId) {
-  try {
-    var responseBody = await getOne(getContributorByUserIdRoute + userId, errorHandler, null);
-    var responseJson = await getJsonResponse(responseBody, errorHandler);
-  }
-  catch (ex) {
-    errorHandler('Response error!');
-    return null;
+    catch (ex) {
+      return {'message': ex.message, 'type': 'error'};
+    }
   }
 
-  if (responseJson && responseBody.ok) {
-    return responseJson;
+
+  const deniedContributorRequest = async (contributor) => {
+
   }
-  else {
-    return null;
+  
+  const createChatWithContributor = async (contributorId) => {
+  
   }
-}
+  
+  const getChat = async (contributorId, cooperatorId) => {
+  
+  }
+  
+  const sendMessage = async (senderId, recipientId) => {
+  
+  }
 
 
-export async function getAllContributors(errorHandler) {
-  try {
-    var responseBody = await getAll(getAllContributorsRoute, errorHandler, null, null);
-    var responseJson = await getJsonResponse(responseBody, errorHandler);
+  const getContributorByUserId = async (userId) => {
+    try {
+      var responseBody = await client.getOne(getContributorByUserIdRoute + userId, null);
+      var responseJson = await client.getJsonResponse(responseBody);
+
+      return responseJson;
+    }
+    catch (ex) {
+      return {'message': ex.message, 'type': 'error'};
+    }
   }
-  catch (ex) {
-    localStorage.setItem('errorMessage', 'Response error!');
-    return null
+  
+
+  const getAllContributors = async () => {
+    try {
+      var responseBody = await client.getMany(getAllContributorsRoute, null, null);
+      var responseJson = await client.getJsonResponse(responseBody);
+
+      return responseJson;
+    }
+    catch (ex) {
+      return {'message': ex.message, 'type': 'error'};
+    }
   }
 
-  if (responseJson && responseBody.ok) {
-    return responseJson;
+
+  const deleteContributor = async (contributorId) => {
+    try {
+      var responseBody = await client.deleteOne(deleteContributorRoute + contributorId, null);
+      var responseJson = await client.getJsonResponse(responseBody);
+
+      return responseJson;
+    }
+    catch (ex) {
+      return {'message': ex.message, 'type': 'error'};
+    }
   }
-  else {
-    localStorage.setItem('errorMessage', 'Response error!');
-    return null;
-  }
-}
 
 
-export async function deleteContributor(errorHandler, contributorId) {
-  try {
-    var responseBody = await deleteOne(deleteContributorRoute + contributorId, errorHandler, null);
-    var responseJson = await getJsonResponse(responseBody, errorHandler);
-  }
-  catch (ex) {
-    errorHandler('Response error!');
-    return null
-  }
+  return {
+    createContributor,
+    getContributorByName,
+    acceptContributorRequest,
+    getContributorByUserId,
+    getAllContributors,
+    deleteContributor,
 
-  if (responseJson && responseBody.ok) {
-    return responseJson;
-  }
-  else {
-    errorHandler('Response error!');
-    return null;
+    deniedContributorRequest,
+    createChatWithContributor,
+    getChat,
+    sendMessage,
+
   }
 }

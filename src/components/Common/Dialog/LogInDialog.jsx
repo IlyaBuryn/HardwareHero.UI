@@ -10,7 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import { signIn } from '../../../services/userManager';
+import { useUserManager } from '../../../services/userManager';
 import './Dialog.css'
 import AlertBlock from '../Alert/AlertBlock';
 import { useAlert } from '../Alert/Alert';
@@ -31,10 +31,11 @@ const LogInDialog = () => {
   const addAlert = useAlert();
   const enqueueSnackbarReload = useSnackbarBeforeReload();
   const { isSignInModalOpen, setIsSignInModalOpen, isSignUpModalOpen, setIsSignUpModalOpen } = useAuthDialog();
+  const userManager = useUserManager();
 
   const processLogin = async () => {
     setIsLoading(true);
-    const callbackMessage = await signIn(username, password, rememberLogin);
+    const callbackMessage = await userManager.signIn(username, password, rememberLogin);
     setIsLoading(false);
 
     if (callbackMessage.type === 'error') {

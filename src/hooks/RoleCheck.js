@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { checkUserRole, getUserRole } from '../services/userManager';
+import { useUserManager } from '../services/userManager';
 
 
 const useRoleCheck = () => {
 
   const navigate = useNavigate();
   const [roleResult, setRoleResult] = useState(false);
+  const userManager = useUserManager();
 
   useEffect(() => {
     try {
-      var role = getUserRole();
-      setRoleResult(checkUserRole(role))
+      var role = userManager.getUserRole();
+      setRoleResult(userManager.isUserHasRole(role))
 
       if (!roleResult) {
         navigate('/forbidden');

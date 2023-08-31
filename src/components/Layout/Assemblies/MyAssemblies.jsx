@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Accordion, AccordionSummary, AccordionDetails, Button, Typography, Stack, Avatar, ListItemText, Box } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { getComponentById } from '../../../services/aggregatorManager';
+import { useAggregatorManager } from '../../../services/aggregatorManager';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbarQueue } from '../../Common/Snackbar/SnackbarQueue';
 
@@ -12,6 +12,7 @@ const MyAssemblies = ({ assemblies }) => {
   const [components, setComponents] = useState([]);
   const navigate = useNavigate();
   const enqueueSnackbar = useSnackbarQueue();
+  const aggregatorManager = useAggregatorManager();
 
   const errorHandler = (str) => {
     console.log(str);
@@ -28,7 +29,7 @@ const MyAssemblies = ({ assemblies }) => {
     }
     else {
       try {
-        const promises = ids.map(id => getComponentById(errorHandler, id));
+        const promises = ids.map(async id => await aggregatorManager.getComponentById(id));
         const componentsValue = await Promise.all(promises);
         setComponents(componentsValue);
       } catch (error) {

@@ -1,95 +1,102 @@
-import { getAll, getJsonResponse, getOne } from "../utils/clientConnect";
+import { useFetch } from "../hooks/useFetch";
 
-const getComponentsAsPageByFilterRoute = 'gateway/aggregator/components/';
-const getComponentByIdRoute = 'gateway/aggregator/component/';
-const getPageCountRoute = 'gateway/aggregator/components/pageCount';
+export const useAggregatorManager = () => {
 
-export async function getComponentsAsPageByFilter(handleError, pageNumber, pageSize, filter, searchString) {
+  const getComponentsAsPageByFilterRoute = 'gateway/aggregator/components/';
+  const getComponentByIdRoute = 'gateway/aggregator/component/';
+  const getPageCountRoute = 'gateway/aggregator/components/pageCount';
 
-  if (!filter) {
-    filter = '{}';
-  }
+  const client = useFetch();
 
-  if (!searchString) {
-    searchString = " ";
-  }
+  const getComponentsAsPageByFilter = async (pageNumber, pageSize, filter, searchString) => {
 
-  const additionalHeaders = {
-    'X-Specification-Filter': filter,
-    'X-Search-String': searchString,
-    'X-Page-Size': pageSize,
-  }
-  var responseBody = await getAll(getComponentsAsPageByFilterRoute + pageNumber, handleError, null, 
-    additionalHeaders);
-
-  var responseJson = await getJsonResponse(responseBody, handleError)
-
-  if (responseJson) {
-    return responseJson;
-  }
-  else {
-    handleError('Response error!');
-    return [];
-  }
-}
-
-export async function getPageCount(handleError, pageSize, filter, searchString) {
-  
-  if (false) {
-    return 1;
-  }
+    // TODO: Remove this crap
     if (!filter) {
-    filter = '{}';
+      filter = '{}';
+    }
+
+    // TODO: Need add validation hook
+    if (!searchString) {
+      searchString = " ";
+    }
+
+    const additionalHeaders = {
+      'X-Specification-Filter': filter,
+      'X-Search-String': searchString,
+      'X-Page-Size': pageSize,
+    }
+
+    try {
+      var responseBody = await client.getMany(getComponentsAsPageByFilterRoute + pageNumber, null, additionalHeaders);
+      var responseJson = await client.getJsonResponse(responseBody)
+
+      return responseJson;
+    }
+    catch (ex) {
+      return {'message': ex.message, 'type': 'error'};
+    }
   }
 
-  if (!searchString) {
-    searchString = " ";
-  }
+  // TODO: getComponentsAsPageByFilter shoud return page count !!!
+  const getPageCount = async (pageSize, filter, searchString) => {
+    
+    if (false) {
+      return 1;
+    }
+      if (!filter) {
+      filter = '{}';
+    }
 
-  const additionalHeaders = {
-    'X-Specification-Filter': filter,
-    'X-Search-String': searchString,
-    'X-Page-Size': pageSize,
-  }
-  var responseBody = await getAll(getPageCountRoute, handleError, null, 
-    additionalHeaders);
+    if (!searchString) {
+      searchString = " ";
+    }
 
-  var responseJson = await getJsonResponse(responseBody, handleError)
+    const additionalHeaders = {
+      'X-Specification-Filter': filter,
+      'X-Search-String': searchString,
+      'X-Page-Size': pageSize,
+    }
+    try {
+    var responseBody = await client.getMany(getPageCountRoute, null, additionalHeaders);
+    var responseJson = await client.getJsonResponse(responseBody, handleError)
 
-  if (responseJson) {
     return responseJson;
+    }
+    catch (ex) {
+      return {'message': ex.message, 'type': 'error'};
+    }
   }
-  else {
-    handleError('Response error!');
-    return [];
-  }
-}
 
-export async function getComponentById(errorHandler, id) {
-  
-  var responseBody = await getOne(getComponentByIdRoute + id, errorHandler, null);
+  const getComponentById = async (componentId) => {
+    try {
+      var responseBody = await client.getOne(getComponentByIdRoute + componentId, null);
+      var responseJson = await client.getJsonResponse(responseBody);
 
-  var responseJson = await getJsonResponse(responseBody, errorHandler);
+      return responseJson;
+    }
+    catch (ex) {
+      return {'message': ex.message, 'type': 'error'};
+    }
+  }
 
-  
-  if (responseJson) {
-    return responseJson;
+  const getManyComponents = async (ids) => {
+    if (!ids || ids.length === 0) {
+      return [];
+    }
+    else {
+      const items = [];
+      ids.forEach(async id => { // TODO: To backend
+        const item = await getComponentById(id);
+        items.push(item); // TODO: should be check for item.responseValue or smth
+      });
+      return items
+    }
   }
-  else {
-    errorHandler('Response error!');
-    return null;
-  }
-}
 
-export async function getManyComponents(errorHandler, ids) {
-  if (!ids || ids.length === 0) {
-    return [];
-  }
-  else {
-    const items = [];
-    ids.forEach(id => {
-      items.push(getComponentById(errorHandler, id));
-    });
-    return items
+  return {
+    getComponentsAsPageByFilter,
+    getPageCount,
+    getComponentById,
+    getManyComponents
   }
 }

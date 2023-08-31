@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Paper, TextField, Box, Select, MenuItem, FormControl, InputLabel, Button, CircularProgress, Divider } from '@mui/material';
-import { createContributor, getContributorByUserId } from '../../../services/contributorManager';
+import { useContributorManager } from '../../../services/contributorManager';
 import { ErrorAlert, useErrorMessage } from '../../Common/Alert/ErrorAlert';
 import SuccessBox from '../Configurator/SuccessBox';
 import DeniedBox from '../Configurator/DeniedBox';
-import { getUserFromCookie, isSessionUser, signIn } from '../../../services/userManager';
+import { useUserManager } from '../../../services/userManager';
 
 const regions = ['Belarus', 'Russia (Moscow)', 'Russia (Saint Petersburg)', 'Poland'];
 const baseImageUrl = 'http://localhost/images/';
@@ -24,6 +24,8 @@ const ContributorSignUp = () => {
 
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const userManager = useUserManager();
+  const contributorManager = useContributorManager();
 
   const [error, handleErrorMessageChange, clearErrorMessage] = useErrorMessage();  
 
@@ -59,13 +61,13 @@ const ContributorSignUp = () => {
       handleErrorMessageChange('Некоторые поля не заполнены!')
     }
     else {
-      await signIn(userName, password, true, handleErrorMessageChange)
-      if (isSessionUser()) {
+      await userManager.signIn(userName, password, true, handleErrorMessageChange)
+      if (userManager.isLoggedIn()) {
         const file = selectedImage
         const fileExtension = file.name.split('.').pop();
         const fileName = `${companyName}_logo.${fileExtension}`;
   
-        const response = await createContributor(handleErrorMessageChange, region, companyName, companyUrl, fileName, selectedImage)
+        const response = await contributorManager.createContributor(region, companyName, companyUrl, fileName, selectedImage)
         console.log(response)
         if (response) {
           window.location.reload();
@@ -78,14 +80,11 @@ const ContributorSignUp = () => {
   }
 
 
-  const placeholderHandler = (str) => { }
-
-
   useEffect(() => {
     const initializeComponent = async () => {
       setIsLoadingScreen(true);
-      if (isSessionUser()) {
-        const contributorRequest = await getContributorByUserId(placeholderHandler, getUserFromCookie().userId);
+      if (userManager.isLoggedIn()) {
+        const contributorRequest = await contributorManager.getContributorByUserId(userManager.getUserSessionInfo().userId);
   
         if (contributorRequest === null) {
           setIsUserAlreadyStartContributor(false);

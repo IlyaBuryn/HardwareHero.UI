@@ -4,16 +4,17 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 
 import LanguageMenu from '../../../Common/Menu/LanguageMenu';
-import { getUserRole, isSessionUser } from '../../../../services/userManager';
+import { useUserManager } from '../../../../services/userManager';
 
 
 function LeftHeaderControls() {
 
   const [userRole, setUserRole] = useState('')
+  const userManager = useUserManager();
 
   useEffect(() => {
-    if (isSessionUser()) {
-      setUserRole(getUserRole());
+    if (userManager.isLoggedIn()) {
+      setUserRole(userManager.getUserRole());
     }
   }, []);
 
