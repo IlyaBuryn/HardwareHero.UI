@@ -1,12 +1,10 @@
+import { useApiRoutes } from "../data/apiRoutes";
 import { useFetch } from "../hooks/useFetch";
 
 export const useAggregatorManager = () => {
 
-  const getComponentsAsPageByFilterRoute = 'gateway/aggregator/components/';
-  const getComponentByIdRoute = 'gateway/aggregator/component/';
-  const getPageCountRoute = 'gateway/aggregator/components/pageCount';
-
   const client = useFetch();
+  const api = useApiRoutes();
 
   const getComponentsAsPageByFilter = async (pageNumber, pageSize, filter, searchString) => {
 
@@ -27,7 +25,7 @@ export const useAggregatorManager = () => {
     }
 
     try {
-      var responseBody = await client.getMany(getComponentsAsPageByFilterRoute + pageNumber, null, additionalHeaders);
+      var responseBody = await client.getMany(api.aggregatorRoutes['getManyAsPage'] + pageNumber, null, additionalHeaders);
       var responseJson = await client.getJsonResponse(responseBody)
 
       return responseJson;
@@ -57,7 +55,7 @@ export const useAggregatorManager = () => {
       'X-Page-Size': pageSize,
     }
     try {
-    var responseBody = await client.getMany(getPageCountRoute, null, additionalHeaders);
+    var responseBody = await client.getMany(api.aggregatorRoutes['getPageCount'], null, additionalHeaders);
     var responseJson = await client.getJsonResponse(responseBody, handleError)
 
     return responseJson;
@@ -69,7 +67,7 @@ export const useAggregatorManager = () => {
 
   const getComponentById = async (componentId) => {
     try {
-      var responseBody = await client.getOne(getComponentByIdRoute + componentId, null);
+      var responseBody = await client.getOne(api.aggregatorRoutes['getOneById'] + componentId, null);
       var responseJson = await client.getJsonResponse(responseBody);
 
       return responseJson;

@@ -1,14 +1,13 @@
 import Cookies from 'js-cookie';
 
 import { useFetch } from '../hooks/useFetch';
+import { useApiRoutes } from '../data/apiRoutes';
 
 
 export const useUserManager = () => {
 
   const client = useFetch();
-  const loginApiRoute = 'gateway/sign-in';
-  const signInApiRoute = 'gateway/sign-up';
-  const getUserByIdRoute = 'gateway/user/'
+  const api = useApiRoutes();
   const returnUrl = 'http://localhost/home';
 
   const signIn = async (username, password, rememberLogin) => {
@@ -19,7 +18,7 @@ export const useUserManager = () => {
     }
     
     try {
-      var responseBody = await client.postOne(loginApiRoute, JSON.stringify({
+      var responseBody = await client.postOne(api.identityRoutes['signIn'], JSON.stringify({
         username,
         password,
         returnUrl,
@@ -46,7 +45,7 @@ export const useUserManager = () => {
     }
   
     try {
-      var responseBody = await postOne(signInApiRoute, JSON.stringify({
+      var responseBody = await postOne(api.identityRoutes['signUp'], JSON.stringify({
         fullName,
         username,
         password,
@@ -112,10 +111,9 @@ export const useUserManager = () => {
 };
 
 
-
   const getUserById = async (userId) => {
     try {
-      var responseBody = await client.getOne(getUserByIdRoute + userId, null);
+      var responseBody = await client.getOne(api.identityRoutes['userById'] + userId, null);
       var responseJson = await client.getJsonResponse(responseBody);
     
       if (responseJson) {
@@ -157,7 +155,7 @@ export const useUserManager = () => {
       const tokenIssuedAt = Cookies.get('tokenIssuedAt');
       const currentTime = Math.floor(Date.now() / 1000);
       const tokenExpirationTime = tokenIssuedAt + expiresIn;
-      
+
       return currentTime < tokenExpirationTime;
     }
     catch (ex) {

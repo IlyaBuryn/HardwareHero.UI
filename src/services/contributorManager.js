@@ -1,20 +1,12 @@
+import { useApiRoutes } from "../data/apiRoutes";
 import { useFetch } from "../hooks/useFetch";
 import { useUserManager } from "./userManager";
 
 export const useContributorManager = () => {
-  
-  // TODO: Move routes to /data directory
-  const createContributorRoute = 'gateway/contributor';
-  const getContributorByUserIdRoute = 'gateway/contributor/by-user/';
-  const deleteContributorRoute = 'gateway/contributor/';
-  const uploadImageRoute = 'gateway/contributor/upload-image';
-  const getAllContributorsRoute = 'gateway/contributor';
-  const updateContributorRoute = 'gateway/contributor';
-  const getContributrByNameRoute = 'gateway/contributor/';
-  const sendEmailMessageRoute = 'gateway/mail/send';
 
   const userManager = useUserManager();
   const client = useFetch();
+  const api = useApiRoutes();
 
 
   const createContributor = async (region, companyName, companyUrl, logoName, logo) => {
@@ -28,9 +20,9 @@ export const useContributorManager = () => {
     });
   
     try {
-      var logoResponseBody = await client.postImage(uploadImageRoute, logo, logoName);
+      var logoResponseBody = await client.postImage(api.contributorRoutes['uploadImage'], logo, logoName);
       if (logoResponseBody.ok) {
-        var responseBody = await client.postOne(createContributorRoute, data, null);
+        var responseBody = await client.postOne(api.contributorRoutes['createOne'], data, null);
         var responseJson = await client.getJsonResponse(responseBody);
   
         return responseJson;
@@ -45,7 +37,7 @@ export const useContributorManager = () => {
 
   const getContributorByName = async (name) => {
     try {
-      var responseBody = await client.getOne(getContributrByNameRoute + name, null);
+      var responseBody = await client.getOne(api.contributorRoutes['getOneByName'] + name, null);
       var responseJson = await client.getJsonResponse(responseBody);
   
       return responseJson;
@@ -60,7 +52,7 @@ export const useContributorManager = () => {
     // TODO: set method at backend
     try {
       contributor.isConfirmed = true;
-      var responseUpdateBody = await client.putOne(updateContributorRoute, JSON.stringify(contributor), null);
+      var responseUpdateBody = await client.putOne(api.contributorRoutes['updateOne'], JSON.stringify(contributor), null);
       var responseUpdateJson = await client.getJsonResponse(responseUpdateBody);
   
       if (responseUpdateJson) {
@@ -70,7 +62,7 @@ export const useContributorManager = () => {
           recipientsEmailAddress: userManager.getUserSessionInfo().email,
           senderId: userManager.getUserSessionInfo().userId
         });
-        var responseEmailBody = await client.postOne(sendEmailMessageRoute, message, null);
+        var responseEmailBody = await client.postOne(api.contributorRoutes['sendEmail'], message, null);
         var responseEmailJson = await client.getJsonResponse(responseEmailBody);
   
         return responseEmailJson;
@@ -103,7 +95,7 @@ export const useContributorManager = () => {
 
   const getContributorByUserId = async (userId) => {
     try {
-      var responseBody = await client.getOne(getContributorByUserIdRoute + userId, null);
+      var responseBody = await client.getOne(api.contributorRoutes['getOneByUserId'] + userId, null);
       var responseJson = await client.getJsonResponse(responseBody);
 
       return responseJson;
@@ -116,7 +108,7 @@ export const useContributorManager = () => {
 
   const getAllContributors = async () => {
     try {
-      var responseBody = await client.getMany(getAllContributorsRoute, null, null);
+      var responseBody = await client.getMany(api.contributorRoutes['getMany'], null, null);
       var responseJson = await client.getJsonResponse(responseBody);
 
       return responseJson;
@@ -129,7 +121,7 @@ export const useContributorManager = () => {
 
   const deleteContributor = async (contributorId) => {
     try {
-      var responseBody = await client.deleteOne(deleteContributorRoute + contributorId, null);
+      var responseBody = await client.deleteOne(api.contributorRoutes['deleteOne'] + contributorId, null);
       var responseJson = await client.getJsonResponse(responseBody);
 
       return responseJson;

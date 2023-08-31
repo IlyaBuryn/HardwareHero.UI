@@ -1,14 +1,13 @@
 import { saveAs } from 'file-saver';
 import { useUserManager } from './userManager';
 import { useFetch } from '../hooks/useFetch';
+import { useApiRoutes } from '../data/apiRoutes';
 
 export const useAssemblyManager = () => {
-  
-  const postAsseblyToDatabaseRoute = 'gateway/assemblies';
-  const getAssembliesByUserIdRoute = 'gateway/assemblies/';
 
   const client = useFetch();
   const userManager = useUserManager();
+  const api = useApiRoutes();
 
   const guid = () => {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -42,7 +41,7 @@ export const useAssemblyManager = () => {
         ComponentIds: itemIds,
       });
 
-      var responseBody = await client.postOne(postAsseblyToDatabaseRoute, data, null);
+      var responseBody = await client.postOne(api.assemblyRoutes['createOne'], data, null);
       var responseJson = await client.getJsonResponse(responseBody);
 
       return responseJson; // TODO: it also should return success message (was: successHandler)
@@ -55,7 +54,8 @@ export const useAssemblyManager = () => {
 
   const getAssembliesByUserId = async () => {
     try {
-      var responseBody = await client.getMany(getAssembliesByUserIdRoute + userManager.getUserSessionInfo().userId, null, null);
+      var responseBody = await client.getMany(api.assemblyRoutes['getOneByUserId'] + userManager
+        .getUserSessionInfo().userId, null, null);
       var responseJson = await client.getJsonResponse(responseBody);
         
       return responseJson;
