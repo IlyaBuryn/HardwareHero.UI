@@ -6,6 +6,6 @@ export const themeColors = {
       color: '#457EAC', // secondary main
     },
     secondaryLight: {
-      color: '#9191E9', // secondary light
+      color: '#F3F3F3', // secondary light
     },
   };

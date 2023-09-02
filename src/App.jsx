@@ -7,7 +7,7 @@ import ProfilePage from './pages/Profile/ProfilePage';
 import AggregatorPage from './pages/Aggregator/AggregatorPage';
 import ContributorPage from './pages/Contributor/ContributorPage';
 import ContributorRequestsPage from './pages/Contributor/ContributorRequestsPage';
-import AggregatorOneElement from './components/Layout/Aggregator/AggregatorOneElement';
+import ProductPage  from "./pages/Aggregator/ProductPage";
 import HomePage from './pages/Home/HomePage';
 import TestPage from './pages/TestPage/TestPage';
 import UnauthorizedPage from "./pages/Error/UnauthorizedPage";
@@ -32,7 +32,7 @@ function App() {
     { path: "/prices", element: <AggregatorPage /> },
     { path: "/contributor", element: <ContributorPage /> },
     { path: "/contributor-requests", element: <ContributorRequestsPage /> },
-    { path: "/prices/:componentId", element: <AggregatorOneElement /> },
+    { path: "/prices/:componentId", element: <ProductPage /> },
     { path: "/unauthorized", element: <UnauthorizedPage /> },
     { path: "/forbidden", element: <ForbiddenPage /> },
     { path: "/not-found/:prevRoute", element: <NotFoundPage /> }]
