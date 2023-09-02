@@ -100,6 +100,11 @@
     "Description": "You do not have permission to access this page.",
     "BackToHomePage": "Go to home page"
   },
+  "NotFound": {
+    "Title":"Error 404: Page not found",
+    "Description": "This page does not exist.",
+    "BackToPrevPage": "Go to previous page"
+  },
   "Errors": {
     "Unauthorized": "You are not logged in to your account!"
   },

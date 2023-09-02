@@ -17,6 +17,7 @@ import useExecuteAfterReload from "./hooks/ExecuteAfterReload";
 import { AuthDialogProvider } from "./components/Common/Dialog/AuthDialogContext";
 import { standardTheme } from "./utils/theme";
 import './App.css'
+import NotFoundPage from "./pages/Error/NotFoundPage";
 
 
 function App() {
@@ -33,7 +34,8 @@ function App() {
     { path: "/contributor-requests", element: <ContributorRequestsPage /> },
     { path: "/prices/:componentId", element: <AggregatorOneElement /> },
     { path: "/unauthorized", element: <UnauthorizedPage /> },
-    { path: "/forbidden", element: <ForbiddenPage /> }]
+    { path: "/forbidden", element: <ForbiddenPage /> },
+    { path: "/not-found/:prevRoute", element: <NotFoundPage /> }]
     
   return (
     <>
