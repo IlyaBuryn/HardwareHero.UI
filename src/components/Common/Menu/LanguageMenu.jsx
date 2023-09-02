@@ -4,6 +4,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import LanguageIcon from '@mui/icons-material/Language';
 import { useTranslation } from 'react-i18next';
+import { Tooltip } from '@mui/material';
 
 const options = [
   { label: 'Русский', prefix: 'ru' },
@@ -37,16 +38,18 @@ export default function LanguageMenu() {
 
   return (
     <div>
-      <IconButton
-        aria-label="more"
-        id="long-button"
-        aria-controls={open ? 'long-menu' : undefined}
-        aria-expanded={open ? 'true' : undefined}
-        aria-haspopup="true"
-        onClick={handleClick}
-      >
-        <LanguageIcon sx={{ color: 'white' }} />
-      </IconButton>
+      <Tooltip title="Language" >
+        <IconButton
+          aria-label="more"
+          id="long-button"
+          aria-controls={open ? 'long-menu' : undefined}
+          aria-expanded={open ? 'true' : undefined}
+          aria-haspopup="true"
+          onClick={handleClick}
+        >
+          <LanguageIcon sx={{ color: 'white' }} />
+        </IconButton>
+      </Tooltip>
       <Menu
         id="long-menu"
         MenuListProps={{
